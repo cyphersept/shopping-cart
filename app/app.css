@@ -10,3 +10,30 @@ body {
     color-scheme: dark;
   }
 }
+
+a:hover {
+  cursor: pointer;
+}
+
+.hover-slide {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: calc(100% - 16px);
+    height: 4px;
+    background-color: theme("colors.violet.800");
+    bottom: 6px;
+    left: 8px;
+    transform-origin: right;
+    transform: scaleX(0);
+    transition: transform 0.2s ease-in-out;
+  }
+
+  &:hover::before {
+    transform-origin: left;
+    transform: scaleX(1);
+    transition-timing-function: ease-in;
+  }
+}
