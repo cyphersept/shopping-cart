@@ -1,6 +1,9 @@
-import { NavLink, Outlet } from "react-router";
+import { NavLink, Outlet, useRouteError } from "react-router";
+import { NavBar } from "~/components/NavBar";
 import { Logo } from "../components/Logo";
 import type { LinkObj } from "~/custom-types";
+import { isRouteErrorResponse } from "react-router";
+import type { Route } from "./+types/root";
 
 export default function NavBarLayout() {
   const navStyle = "p-4 text-lg hover-slide ";
@@ -11,27 +14,42 @@ export default function NavBarLayout() {
   ];
   return (
     <>
-      <nav className="flex bg-violet-400 items-center gap-4">
-        <Logo classes="mr-auto text-4xl p-4" />
-        {navLinks.map((l) => (
-          <NavLink
-            className={({ isActive, isPending }) =>
-              isPending
-                ? navStyle + "pending"
-                : isActive
-                ? navStyle + "active"
-                : navStyle
-            }
-            key={l.url}
-            to={l.url}
-          >
-            {l.text}
-          </NavLink>
-        ))}
-      </nav>
+      <NavBar />
       <main>
-        <Outlet />
+        <ErrorBoundary>
+          <Outlet />
+        </ErrorBoundary>
       </main>
     </>
+  );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+  let message = "Oops!";
+  let details = "NESTED An unexpected error occurred.";
+  let stack: string | undefined;
+
+  if (isRouteErrorResponse(error)) {
+    message = error.status === 404 ? "404" : "Error";
+    details =
+      error.status === 404
+        ? "NESTED The requested page could not be found."
+        : error.statusText || details;
+  } else if (import.meta.env.DEV && error && error instanceof Error) {
+    details = error.message;
+    stack = error.stack;
+  }
+
+  return (
+    <main className="pt-16 p-4 container mx-auto">
+      <h1>{message}</h1>
+      <p>{details}</p>
+      {stack && (
+        <pre className="w-full p-4 overflow-x-auto">
+          <code>{stack}</code>
+        </pre>
+      )}
+    </main>
   );
 }
