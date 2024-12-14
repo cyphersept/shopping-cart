@@ -6,8 +6,8 @@ import type { Product, SaleInfo } from "./custom-types";
 
 const ProductList: Product[] = [];
 
-export function getProducts() {
-  return ProductList;
+export function getProducts(query?: string) {
+  return query ? findProducts(query) : ProductList;
 }
 
 export function getProductById(targetId: string) {

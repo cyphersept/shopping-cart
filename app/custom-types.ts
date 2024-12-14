@@ -1,8 +1,22 @@
+import type { ReactNode } from "react";
 import type { URL } from "url";
 
 export interface LinkObj {
   url: string;
   text: string;
+}
+
+export interface IconLinkObj {
+  url: string;
+  label: string;
+  icon: ReactNode;
+}
+
+export interface HeroObj {
+  title: string;
+  description: string;
+  imgSrc: string;
+  button?: ReactNode;
 }
 
 export interface Product {

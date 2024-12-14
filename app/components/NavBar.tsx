@@ -12,21 +12,26 @@ export function NavBar() {
   return (
     <nav className="flex bg-violet-400 items-center gap-4">
       <Logo classes="mr-auto text-4xl p-4" />
-      {navLinks.map((l) => (
-        <NavLink
-          className={({ isActive, isPending }) =>
-            isPending
-              ? navStyle + "pending"
-              : isActive
-              ? navStyle + "active"
-              : navStyle
-          }
-          key={l.url}
-          to={l.url}
-        >
-          {l.text}
-        </NavLink>
-      ))}
+      <NavList navLinks={navLinks} navStyle={navStyle} />
     </nav>
   );
+}
+
+export function NavList(p: { navLinks: LinkObj[]; navStyle?: string }) {
+  const list = p.navLinks.map((l) => (
+    <NavLink
+      className={({ isActive, isPending }) =>
+        isPending
+          ? p.navStyle + "pending"
+          : isActive
+          ? p.navStyle + "active"
+          : p.navStyle
+      }
+      key={l.url}
+      to={l.url}
+    >
+      {l.text}
+    </NavLink>
+  ));
+  return list;
 }

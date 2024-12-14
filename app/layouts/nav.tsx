@@ -1,25 +1,19 @@
 import { NavLink, Outlet, useRouteError } from "react-router";
 import { NavBar } from "~/components/NavBar";
 import { Logo } from "../components/Logo";
-import type { LinkObj } from "~/custom-types";
 import { isRouteErrorResponse } from "react-router";
-import type { Route } from "./+types/root";
+import { Footer } from "~/components/Footer";
 
 export default function NavBarLayout() {
-  const navStyle = "p-4 text-lg hover-slide ";
-  const navLinks: LinkObj[] = [
-    { url: "/", text: "Home" },
-    { url: "/shop", text: "Shop" },
-    { url: "/about", text: "About" },
-  ];
   return (
     <>
       <NavBar />
       <main>
-        <ErrorBoundary>
-          <Outlet />
-        </ErrorBoundary>
+        <Outlet />
+        {/* <ErrorBoundary>
+        </ErrorBoundary> */}
       </main>
+      <Footer />
     </>
   );
 }
@@ -42,7 +36,7 @@ export function ErrorBoundary() {
   }
 
   return (
-    <main className="pt-16 p-4 container mx-auto">
+    <div className="pt-16 p-4 container mx-auto">
       <h1>{message}</h1>
       <p>{details}</p>
       {stack && (
@@ -50,6 +44,6 @@ export function ErrorBoundary() {
           <code>{stack}</code>
         </pre>
       )}
-    </main>
+    </div>
   );
 }
