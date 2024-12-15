@@ -22,6 +22,42 @@ export async function findProducts(query: string) {
 
 export async function sortProducts(list: Product[]) {}
 
+function productFactory(customProduct?: Partial<Product>) {
+  const sizes = [4, 8, 16, 32];
+  const prices = [9, 11, 12, 15, 18, 19, 21, 24, 28, 29, 31, 34, 36];
+  const defaultProduct: Product = {
+    itemId: nanoid(12),
+    name: "My New Product",
+    description: "Product description here",
+    tags: [],
+    sizes: getRandomSubarray(sizes),
+    price: prices[Math.floor(Math.random() * prices.length)],
+    imgSrc: "",
+    reviews: Math.floor(Math.random() * 500),
+    rating: Math.floor(Math.random() * 200 + 300) / 100,
+  };
+
+  return { ...defaultProduct, ...customProduct } as Product;
+}
+
+function getRandomSubarray(array: any[]) {
+  if (array.length === 0 || array.length === 1) {
+    return array;
+  }
+
+  const randomLength = Math.floor(Math.random() * array.length) + 1;
+  const randomIndices: typeof array = [];
+
+  while (randomIndices.length < randomLength) {
+    const randomIndex = Math.floor(Math.random() * array.length);
+    if (!randomIndices.includes(randomIndex)) {
+      randomIndices.push(randomIndex);
+    }
+  }
+
+  return randomIndices.map((index) => array[index]);
+}
+
 // Applies all relevant sales to an item's list price to find sale price
 export async function getSalePrice(targetId: string) {
   const product = await getProductById(targetId);

@@ -8,19 +8,28 @@ export function Accordion(props: {
 }) {
   const [openState, setOpenState] = useState(false);
   const toggle = () => setOpenState(!openState);
-  const scale = openState ? "scale-100 " : "scale-y-0 ";
+  const s = " shadow-[inset_0_1px_0_0_theme(colors.slate.50)] ";
+  const o = openState
+    ? "max-h-40 duration-300 ease-out"
+    : "max-h-0 duration-400 ease-in-out";
   const arrowIcon = openState ? <FaChevronUp /> : <FaChevronDown />;
+  const up = openState ? " -rotate-180" : " rotate-0";
+
   return (
-    <div className={"accordion " + props.classes}>
+    <div className={"accordion border border-slate-50" + props.classes}>
       <button
         type="button"
         onClick={toggle}
-        className="p-4 text-lg font-bold w-full flex items-center justify-between"
+        className={
+          "p-2 text-lg font-bold w-full flex items-center justify-between"
+        }
       >
         {props.title}
-        {arrowIcon}
+        <FaChevronDown className={"transition-transform" + up} />
       </button>
-      <div className={scale + "p-2 transition-transform"}>{props.inner}</div>
+      <div className={"overflow-hidden transition-[max-height]" + s + o}>
+        <div className="m-4">{props.inner}</div>
+      </div>
     </div>
   );
 }

@@ -15,6 +15,7 @@ export default {
           '"Segoe UI Symbol"',
           '"Noto Color Emoji"',
         ],
+        serif: ['"Corben"', '"Sitka Text"', "Cambria", "serif"],
       },
     },
   },

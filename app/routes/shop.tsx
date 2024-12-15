@@ -1,9 +1,8 @@
-import { Form, useLoaderData } from "react-router";
-import { getProducts } from "~/products";
 import type { Route } from "./+types/shop";
 import type { Product } from "~/custom-types";
-import { Accordion } from "~/components/Accordion";
-import { useState } from "react";
+import { SearchFilters } from "~/components/Filters";
+import { Pill } from "~/components/Pill";
+import { SearchBar } from "~/components/Searchbar";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   // const product = await getProducts;
@@ -14,25 +13,30 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 export default function Shop() {
   //const { product } = useLoaderData();
   return (
-    <>
-      <Filters />
-      <li className="list-image-none"></li>
-    </>
+    <section className="p-12">
+      <SearchFilters />
+      <SearchBar />
+    </section>
   );
 }
 
-function Filters() {
-  const price = (
-    <Form>
-      <label htmlFor="">
-        Cost
-        <input type="range" name="max-price" id="max-price" />
-      </label>
-    </Form>
+function Card(product: Product) {
+  const tagList = (
+    <ul className="capitalize flex gap-2 list-none">
+      {product.tags.map((t) => (
+        <Pill key={t} color="slate-800" bg="violet-200">
+          {t}
+        </Pill>
+      ))}
+    </ul>
   );
   return (
-    <Form className="w-60">
-      <Accordion title="Price" inner={price} />
-    </Form>
+    <li className="card p-4 flex flex-col gap-4">
+      <img src={product.imgSrc} alt={"Image of " + product.name} />
+      <h3 className="">{product.name}</h3>
+      <Pill color="violet-200" rounded="md">
+        {"$" + product.price}
+      </Pill>
+    </li>
   );
 }

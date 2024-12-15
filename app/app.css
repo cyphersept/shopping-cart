@@ -15,6 +15,12 @@ a:hover {
   cursor: pointer;
 }
 
+h1,
+h2,
+h3 {
+  @apply font-serif;
+}
+
 .hover-slide {
   position: relative;
 

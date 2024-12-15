@@ -24,9 +24,11 @@ export interface Product {
   name: string;
   description: string;
   tags: string[];
-  seo: string;
+  sizes: number[];
   price: number;
   imgSrc: string;
+  reviews: number;
+  rating: number;
 }
 
 export interface CartItem {
