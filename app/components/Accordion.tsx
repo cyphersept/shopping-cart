@@ -5,8 +5,9 @@ export function Accordion(props: {
   inner: ReactElement;
   title?: string;
   classes?: string;
+  defaultOpen?: boolean;
 }) {
-  const [openState, setOpenState] = useState(false);
+  const [openState, setOpenState] = useState(props.defaultOpen ?? false);
   const toggle = () => setOpenState(!openState);
   const s = " shadow-[inset_0_1px_0_0_theme(colors.slate.50)] ";
   const o = openState
@@ -28,7 +29,7 @@ export function Accordion(props: {
         <FaChevronDown className={"transition-transform" + up} />
       </button>
       <div className={"overflow-hidden transition-[max-height]" + s + o}>
-        <div className="m-4">{props.inner}</div>
+        <div className="p-4">{props.inner}</div>
       </div>
     </div>
   );

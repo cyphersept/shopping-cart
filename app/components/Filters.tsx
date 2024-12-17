@@ -1,6 +1,7 @@
 import { Form } from "react-router";
 import { Accordion } from "./Accordion";
 import { useState } from "react";
+import { SearchBar } from "./Searchbar";
 
 const c = "mr-2";
 const fsStyle = "flex flex-col gap-2";
@@ -12,7 +13,8 @@ export function SearchFilters() {
       <Accordion title="Price" inner={<Price />} />
       <Accordion title="Type" inner={<Type />} />
       <Accordion title="Amount" inner={<Amount />} />
-      <Accordion title="SortBy" inner={<SortBy />} />
+      <Accordion title="Sort By" inner={<SortBy />} />
+      <Accordion title="Search" inner={<SearchBar />} defaultOpen={true} />
     </Form>
   );
 }

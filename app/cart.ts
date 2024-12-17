@@ -9,13 +9,22 @@ export async function getCart() {
 }
 
 // Add (addQuantity) instaces of item with ID to saved cart values
-export async function addToCart(myItemId: string, addQuantity: number) {
+export async function addToCart(
+  myItemId: string,
+  itemSize: number,
+  addQuantity = 1
+) {
   let cart: CartItem[] = await getCart();
 
   // If item is already in the cart, increase its quantity; else add it
   const existing = cart.find((item) => item.itemId === myItemId);
   if (existing) existing.quantity += addQuantity;
-  else cart.push({ itemId: myItemId, quantity: addQuantity });
+  else
+    cart.push({
+      itemId: myItemId,
+      selectedSize: itemSize,
+      quantity: addQuantity,
+    });
 
   // Save updated cart state
   await localforage.setItem("cart", cart);
@@ -45,7 +54,7 @@ export async function cartSum() {
   const pricePromises = Promise.all(
     cart.map(async (item) => {
       const truePrice = await getSalePrice(item.itemId);
-      return truePrice ? item.quantity * truePrice : 0;
+      return truePrice ? item.quantity * item.selectedSize * truePrice : 0;
     })
   );
   const cartSum = (await pricePromises).reduce((acc, curr) => acc + curr, 0);

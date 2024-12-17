@@ -10,7 +10,7 @@ export function SearchBar({ classes = "" }) {
       </label>
       <input
         type="text"
-        className="p-2 left-0 w-auto border-b border-slate-50  "
+        className="p-2 left-0 border-b border-slate-50 w-full "
         title="searchbar"
         onChange={(e) => {
           setShow(e.target.value === "");

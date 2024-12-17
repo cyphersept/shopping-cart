@@ -19,19 +19,21 @@ export function NavBar() {
 
 export function NavList(p: { navLinks: LinkObj[]; navStyle?: string }) {
   const list = p.navLinks.map((l) => (
-    <NavLink
-      className={({ isActive, isPending }) =>
-        isPending
-          ? p.navStyle + "pending"
-          : isActive
-          ? p.navStyle + "active"
-          : p.navStyle
-      }
-      key={l.url}
-      to={l.url}
-    >
-      {l.text}
-    </NavLink>
+    <div className="p-4 text-lg">
+      <NavLink
+        className={({ isActive, isPending }) =>
+          isPending
+            ? "hover-slide pending"
+            : isActive
+            ? "hover-slide active"
+            : "hover-slide"
+        }
+        key={l.url}
+        to={l.url}
+      >
+        {l.text}
+      </NavLink>
+    </div>
   ));
   return list;
 }

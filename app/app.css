@@ -24,7 +24,7 @@ h3 {
 .hover-slide {
   position: relative;
 
-  &::before {
+  &::after {
     content: "";
     position: absolute;
     width: calc(100% - 16px);
@@ -37,7 +37,7 @@ h3 {
     transition: transform 0.2s ease-in-out;
   }
 
-  &:hover::before {
+  &:hover::after {
     transform-origin: left;
     transform: scaleX(1);
     transition-timing-function: ease-in;

@@ -1,37 +1,54 @@
 import { nanoid } from "nanoid";
-import localforage from "localforage";
 import { matchSorter } from "match-sorter";
 import { sortBy } from "sort-by-typescript";
 import type { Product, SaleInfo } from "./custom-types";
+import { productImages } from "./images";
+import { LoremIpsum } from "lorem-ipsum";
+import localforage from "localforage";
 
-const ProductList: Product[] = [];
+const lorem = new LoremIpsum({
+  sentencesPerParagraph: {
+    max: 4,
+    min: 2,
+  },
+  wordsPerSentence: {
+    max: 20,
+    min: 6,
+  },
+});
+const productList: Product[] = generateProducts(18);
 
 export function getProducts(query?: string) {
-  return query ? findProducts(query) : ProductList;
+  return query ? findProducts(query) : productList;
 }
 
 export function getProductById(targetId: string) {
-  return ProductList.find((item) => item.itemId === targetId) ?? false;
+  return productList.find((item) => item.itemId === targetId) ?? false;
 }
 
-export async function findProducts(query: string) {
-  const products: Product[] = (await localforage.getItem("products")) ?? [];
-  const searchKeys = ["name", "description", "tags", "seo"];
+export async function findProducts(query: string, products = productList) {
+  const searchKeys = ["name", "description", "tags"];
   return matchSorter(products, query, { keys: searchKeys });
 }
 
-export async function sortProducts(list: Product[]) {}
+export async function sortProducts(list: Product[]) {
+  return list;
+}
 
+// Generate a new product
 function productFactory(customProduct?: Partial<Product>) {
-  const sizes = [4, 8, 16, 32];
-  const prices = [9, 11, 12, 15, 18, 19, 21, 24, 28, 29, 31, 34, 36];
+  const sizes = [1, 1.5, 2, 3, 4, 8];
+  const prices = [4, 5, 6, 7, 9, 11, 12, 15, 18, 19, 21, 24, 28, 29, 30];
+  const tag1 = ["Green Tea", "White Tea", "Black Tea"];
+  const tag2 = ["Herbal Tea", "Fruit Tea", "Floral Tea"];
+
   const defaultProduct: Product = {
     itemId: nanoid(12),
-    name: "My New Product",
-    description: "Product description here",
-    tags: [],
-    sizes: getRandomSubarray(sizes),
-    price: prices[Math.floor(Math.random() * prices.length)],
+    name: lorem.generateWords(2),
+    description: lorem.generateParagraphs(2),
+    tags: [getRandomFromArr(tag1), getRandomFromArr(tag2)],
+    sizes: getRandomSubarray(sizes).sort((a, b) => a - b),
+    price: getRandomFromArr(prices),
     imgSrc: "",
     reviews: Math.floor(Math.random() * 500),
     rating: Math.floor(Math.random() * 200 + 300) / 100,
@@ -40,6 +57,23 @@ function productFactory(customProduct?: Partial<Product>) {
   return { ...defaultProduct, ...customProduct } as Product;
 }
 
+// Creates dummy content objects for [count] products
+export function generateProducts(count: number) {
+  const products: Product[] = [];
+
+  for (let i = 0; i < count; i++) {
+    const currSrc = productImages[i % productImages.length];
+    products.push(productFactory({ imgSrc: currSrc }));
+  }
+  return products;
+}
+
+// Selects one random element from an array
+function getRandomFromArr(array: any[]) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+// Selects a random selection of elements from an array
 function getRandomSubarray(array: any[]) {
   if (array.length === 0 || array.length === 1) {
     return array;
