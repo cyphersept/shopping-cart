@@ -19,16 +19,15 @@ export function NavBar() {
 
 export function NavList(p: { navLinks: LinkObj[]; navStyle?: string }) {
   const list = p.navLinks.map((l) => (
-    <div className="p-4 text-lg">
+    <div className="text-lg" key={l.url}>
       <NavLink
         className={({ isActive, isPending }) =>
           isPending
-            ? "hover-slide pending"
+            ? "hover-slide p-4 pending"
             : isActive
-            ? "hover-slide active"
-            : "hover-slide"
+            ? "hover-slide p-4 active"
+            : "hover-slide p-4"
         }
-        key={l.url}
         to={l.url}
       >
         {l.text}

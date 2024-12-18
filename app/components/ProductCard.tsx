@@ -14,63 +14,36 @@ export function ProductCard({ product, full }: CardProps) {
   const [currPrice, setCurrPrice] = useState(
     product.price * product.sizes[selectIndex]
   );
+
+  // Displays price as pretty currency string
   const formattedPrice =
     currPrice % 1 === 0 ? "$" + currPrice : "$" + currPrice.toFixed(2);
-  const sizeStyle =
-    "py-[0.25em] px-[0.5em] normal-case rounded-lg transition-colors ";
 
-  const tagList = (
-    <ul className="capitalize flex gap-2 list-none">
-      {product.tags.map((t) => (
-        <Pill key={t} classes="text-indigo-900 bg-indigo-200">
-          {t}
-        </Pill>
-      ))}
-    </ul>
-  );
+  // Selects a different product size
+  const selectSize = (size: number, index: number) => {
+    setCurrPrice(size * product.price);
+    setSelectIndex(index);
+  };
 
-  const sizeList = (
-    <ul className={"capitalize flex gap-2 list-none"}>
-      {product.sizes.map((t, index) => (
-        <li>
-          <button
-            type="button"
-            key={t}
-            className={
-              index === selectIndex
-                ? sizeStyle + "bg-indigo-400"
-                : sizeStyle + "bg-slate-700"
-            }
-            onClick={() => {
-              setCurrPrice(t * product.price);
-              setSelectIndex(index);
-            }}
-          >
-            {t} oz
-          </button>
-        </li>
-      ))}
-    </ul>
-  );
+  // Adds the current product to cart at the selected size
+  const cartAddFunc = () =>
+    addToCart(product.itemId, product.sizes[selectIndex]);
+
   return full ? (
-    <section className="card p-4 flex gap-16 ">
-      <img
-        src={product.imgSrc}
-        alt={"Image of " + product.name}
-        className="object-cover aspect-[4/3] "
-      />
+    <section className="card p-16 flex gap-16 w-full ">
+      <div className="shrink w-auto ">
+        <img src={product.imgSrc} alt={"Image of " + product.name} />
+      </div>
 
-      <section className="flex flex-col gap-4">
+      <section className="flex flex-col gap-4 min-w-[33%]">
         <h1 className="text-6xl capitalize ">{product.name}</h1>
-        {tagList}
-        {sizeList}
-        <button
-          type="button"
-          className="p-[0.5em] bg-indigo-400 rounded-md"
-          onClick={() => addToCart(product.itemId, product.sizes[selectIndex])}
-        >
-          Add to Cart
-        </button>
+        <TagList tags={product.tags} />
+        <SizeList
+          sizes={product.sizes}
+          selected={selectIndex}
+          onClick={selectSize}
+        />
+        <AddToCart onClick={cartAddFunc} />
       </section>
     </section>
   ) : (
@@ -80,20 +53,76 @@ export function ProductCard({ product, full }: CardProps) {
         alt={"Image of " + product.name}
         className="object-cover aspect-[4/3] "
       />
-      <h3 className="text-2xl capitalize">
-        <NavLink to={"product/" + product.itemId} className={"hover-slide"}>
+      <h3 className="text-2xl capitalize pb-1">
+        <NavLink to={"product/" + product.itemId} className="hover-slide pb-2">
           {product.name} — {formattedPrice}
         </NavLink>
       </h3>
-      {tagList}
-      {sizeList}
-      <button
-        type="button"
-        className="p-[0.5em] bg-indigo-400 rounded-md"
-        onClick={() => addToCart(product.itemId, product.sizes[selectIndex])}
-      >
-        Add to Cart
-      </button>
+      <TagList tags={product.tags} />
+      <SizeList
+        sizes={product.sizes}
+        selected={selectIndex}
+        onClick={selectSize}
+      />
+      <AddToCart onClick={cartAddFunc} />
     </li>
+  );
+}
+
+// Displays relevant tags about the product
+function TagList({ tags }: { tags: string[] }) {
+  return (
+    <ul className="capitalize flex gap-2 list-none">
+      {tags.map((t) => (
+        <Pill key={t} classes="text-indigo-900 bg-indigo-200">
+          {t}
+        </Pill>
+      ))}
+    </ul>
+  );
+}
+
+// Selectable list of sizes
+function SizeList({
+  sizes,
+  selected,
+  onClick,
+}: {
+  sizes: number[];
+  selected: number;
+  onClick: (arg0: number, arg1: number) => void;
+}) {
+  const style = "py-[0.25em] px-[0.5em] rounded-lg transition-colors";
+  return (
+    <ul className={"normal-case flex gap-2 list-none"}>
+      {sizes.map((t, index) => (
+        <li key={t}>
+          <button
+            type="button"
+            key={t}
+            className={
+              index === selected
+                ? style + " bg-indigo-400"
+                : style + " bg-slate-700"
+            }
+            onClick={() => onClick(t, index)}
+          >
+            {t} oz
+          </button>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function AddToCart({ onClick }: { onClick: () => void }) {
+  return (
+    <button
+      type="button"
+      className="p-[0.5em] bg-indigo-400 rounded-md"
+      onClick={onClick}
+    >
+      Add to Cart
+    </button>
   );
 }

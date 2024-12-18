@@ -4,7 +4,7 @@ import { index, route, layout } from "@react-router/dev/routes";
 export default [
   layout("layouts/nav.tsx", [
     index("routes/home.tsx"),
-    route("products/:itemId", "routes/product.tsx"),
+    route("shop/product/:itemId", "routes/product.tsx"),
     route("shop", "routes/shop.tsx"),
   ]),
 ] satisfies RouteConfig;

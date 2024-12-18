@@ -15,7 +15,7 @@ export default function Product() {
   const { product }: { product: Product } = useLoaderData();
   return (
     <>
-      <ProductCard product={product} />
+      <ProductCard product={product} full={true} />
     </>
   );
 }

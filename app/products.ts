@@ -16,18 +16,27 @@ const lorem = new LoremIpsum({
     min: 6,
   },
 });
-const productList: Product[] = generateProducts(18);
 
-export function getProducts(query?: string) {
-  return query ? findProducts(query) : productList;
+export async function init() {
+  const productList = await getProducts();
+  if (productList.length == 0)
+    await localforage.setItem("products", generateProducts(18));
 }
 
-export function getProductById(targetId: string) {
-  return productList.find((item) => item.itemId === targetId) ?? false;
+export async function getProducts() {
+  const result: Product[] = (await localforage.getItem("products")) ?? [];
+  return result;
 }
 
-export async function findProducts(query: string, products = productList) {
+export async function getProductById(targetId: string) {
+  const list = (await getProducts()) ?? [];
+  return list.find((item) => item.itemId === targetId) ?? false;
+}
+
+// Find product matching query string in search set
+export async function findProducts(query: string, searchSet?: Product[]) {
   const searchKeys = ["name", "description", "tags"];
+  let products = searchSet ? searchSet : (await getProducts()) ?? [];
   return matchSorter(products, query, { keys: searchKeys });
 }
 
