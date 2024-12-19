@@ -1,7 +1,7 @@
 import type { Route } from "./+types/shop";
 import type { Product } from "~/custom-types";
 import { SearchFilters } from "~/components/Filters";
-import { Pill } from "~/components/Pill";
+import { Pill } from "~/components/TextDecorations";
 import { getProducts, init } from "~/products";
 import { useLoaderData } from "react-router";
 import { ProductCard } from "~/components/ProductCard";
@@ -27,7 +27,7 @@ export default function Shop() {
 function ShopList({ classes = "" }) {
   const { products }: { products: Product[] } = useLoaderData();
   return (
-    <ul className={"list-none " + classes}>
+    <ul className={"list-none flex flex-wrap " + classes}>
       {products.map((p) => (
         <ProductCard key={p.itemId} product={p} />
       ))}

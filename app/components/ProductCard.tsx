@@ -1,18 +1,33 @@
 import type { Product } from "~/custom-types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { addToCart } from "~/cart";
-import { Pill } from "~/components/Pill";
+import { Pill, Separator } from "~/components/TextDecorations";
 import { NavLink } from "react-router";
+import { ReviewStars } from "./Reviews";
+import { AddToCart } from "./AddToCart";
 
 interface CardProps {
   product: Product;
   full?: boolean;
 }
+interface JumpButtonProps {
+  children: React.ReactNode;
+  onClick: () => void;
+  classes?: string;
+  isSelected: boolean;
+}
+interface SizeListProps {
+  sizes: number[];
+  selected: number;
+  onClick: (arg0: number, arg1: number) => void;
+  classes?: string;
+  detailed?: boolean;
+}
 
 export function ProductCard({ product, full }: CardProps) {
-  const [selectIndex, setSelectIndex] = useState(0);
+  const [sizeIndex, setSizeIndex] = useState(0);
   const [currPrice, setCurrPrice] = useState(
-    product.price * product.sizes[selectIndex]
+    product.price * product.sizes[sizeIndex]
   );
 
   // Displays price as pretty currency string
@@ -22,32 +37,46 @@ export function ProductCard({ product, full }: CardProps) {
   // Selects a different product size
   const selectSize = (size: number, index: number) => {
     setCurrPrice(size * product.price);
-    setSelectIndex(index);
+    setSizeIndex(index);
   };
 
   // Adds the current product to cart at the selected size
-  const cartAddFunc = () =>
-    addToCart(product.itemId, product.sizes[selectIndex]);
+  const cartAddFunc = () => addToCart(product.itemId, product.sizes[sizeIndex]);
+
+  const paragraphs = product.description
+    .split(/\r?\n/)
+    .map((p, i) => <p key={i}>{p}</p>);
 
   return full ? (
     <section className="card p-16 flex gap-16 w-full ">
-      <div className="shrink w-auto ">
+      <div className="grow w-auto ">
         <img src={product.imgSrc} alt={"Image of " + product.name} />
       </div>
 
-      <section className="flex flex-col gap-4 min-w-[33%]">
+      <section className="flex flex-col gap-6 min-w-[35%] w-96">
         <h1 className="text-6xl capitalize ">{product.name}</h1>
+        <ReviewStars count={product.reviews} avg={product.rating} />
+        <h2 className="text-3xl mb-"> {formattedPrice}</h2>
+        <Separator />
+        <div>
+          <h2 className="text-2xl mb-2">Description</h2>
+          <div className="flex flex-col gap-2">{paragraphs}</div>
+        </div>
         <TagList tags={product.tags} />
-        <SizeList
-          sizes={product.sizes}
-          selected={selectIndex}
-          onClick={selectSize}
-        />
-        <AddToCart onClick={cartAddFunc} />
+        <div>
+          <h2 className="text-2xl mb-3">Sizes Available</h2>
+          <SizeList
+            sizes={product.sizes}
+            selected={sizeIndex}
+            onClick={selectSize}
+            detailed={true}
+          />
+        </div>
+        <AddToCart product={product} sizeIndex={sizeIndex} detailed={true} />
       </section>
     </section>
   ) : (
-    <li className="card p-4 flex flex-col gap-4 border border-slate-50">
+    <li className="card p-4 flex flex-col gap-4 border border-slate-50 w-80">
       <img
         src={product.imgSrc}
         alt={"Image of " + product.name}
@@ -58,21 +87,22 @@ export function ProductCard({ product, full }: CardProps) {
           {product.name} — {formattedPrice}
         </NavLink>
       </h3>
-      <TagList tags={product.tags} />
+      <TagList tags={product.tags} classes="" />
       <SizeList
         sizes={product.sizes}
-        selected={selectIndex}
+        selected={sizeIndex}
         onClick={selectSize}
+        classes="mb-auto"
       />
-      <AddToCart onClick={cartAddFunc} />
+      <AddToCart product={product} sizeIndex={sizeIndex} />
     </li>
   );
 }
 
 // Displays relevant tags about the product
-function TagList({ tags }: { tags: string[] }) {
+function TagList({ tags, classes }: { tags: string[]; classes?: string }) {
   return (
-    <ul className="capitalize flex gap-2 list-none">
+    <ul className={"capitalize flex gap-2 list-none " + classes}>
       {tags.map((t) => (
         <Pill key={t} classes="text-indigo-900 bg-indigo-200">
           {t}
@@ -87,42 +117,52 @@ function SizeList({
   sizes,
   selected,
   onClick,
-}: {
-  sizes: number[];
-  selected: number;
-  onClick: (arg0: number, arg1: number) => void;
-}) {
-  const style = "py-[0.25em] px-[0.5em] rounded-lg transition-colors";
+  classes,
+  detailed,
+}: SizeListProps) {
   return (
-    <ul className={"normal-case flex gap-2 list-none"}>
+    <ul className={"normal-case flex gap-2 list-none flex-wrap " + classes}>
       {sizes.map((t, index) => (
         <li key={t}>
-          <button
-            type="button"
-            key={t}
-            className={
-              index === selected
-                ? style + " bg-indigo-400"
-                : style + " bg-slate-700"
-            }
+          <JumpButton
             onClick={() => onClick(t, index)}
+            classes={detailed ? "py-2 px-6" : ""}
+            isSelected={index === selected}
           >
             {t} oz
-          </button>
+          </JumpButton>
         </li>
       ))}
     </ul>
   );
 }
 
-function AddToCart({ onClick }: { onClick: () => void }) {
+function JumpButton({
+  children,
+  onClick,
+  classes,
+  isSelected,
+}: JumpButtonProps) {
+  const [effect, setEffect] = useState(false);
+  const anim = effect ? " animate-lift " : "";
+  const baseClasses = classes ? classes : "py-[0.25em] px-[0.5em] ";
+  const style =
+    "rounded-lg transition-colors whitespace-nowrap " + anim + baseClasses;
   return (
     <button
       type="button"
-      className="p-[0.5em] bg-indigo-400 rounded-md"
-      onClick={onClick}
+      className={
+        isSelected
+          ? style + " bg-indigo-400"
+          : style + " bg-slate-700 hover:bg-slate-800 "
+      }
+      onClick={() => {
+        onClick();
+        setEffect(true);
+      }}
+      onAnimationEnd={() => setEffect(false)}
     >
-      Add to Cart
+      {children}
     </button>
   );
 }

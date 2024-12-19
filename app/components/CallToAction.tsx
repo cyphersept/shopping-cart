@@ -1,4 +1,4 @@
-import { Pill } from "./Pill";
+import { Pill } from "./TextDecorations";
 import { MdAvTimer, MdColorize, MdFreeCancellation } from "react-icons/md";
 
 export function CallToAction() {
@@ -39,7 +39,7 @@ export function CallToAction() {
       </button>
       <p>
         Existing subscriber?
-        <span className="underline text-sm">Manage your subscription</span>.
+        <span className="underline text-sm"> Manage your subscription</span>.
       </p>
     </section>
   );

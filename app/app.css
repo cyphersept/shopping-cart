@@ -21,7 +21,8 @@ h3 {
   @apply font-serif;
 }
 
-.hover-slide {
+header .hover-slide,
+main .hover-slide {
   position: relative;
 
   &::after {
@@ -41,5 +42,25 @@ h3 {
     transform-origin: left;
     transform: scaleX(1);
     transition-timing-function: ease-in;
+  }
+}
+
+footer .hover-slide:hover {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.animate-lift {
+  animation: lift 350ms ease-in-out 1;
+}
+
+@keyframes lift {
+  0%,
+  100% {
+    transform: translateY(0em);
+  }
+  20%,
+  80% {
+    transform: translateY(-0.5em);
   }
 }

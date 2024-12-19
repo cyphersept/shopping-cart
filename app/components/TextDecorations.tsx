@@ -1,5 +1,3 @@
-import type { ReactNode } from "react";
-
 interface PillProps {
   children?: React.ReactNode;
   classes: string;
@@ -15,5 +13,15 @@ export function Pill({ children, ...props }: PillProps): React.ReactElement {
     >
       {children}
     </div>
+  );
+}
+
+export function Separator({ color }: { color?: string }) {
+  return (
+    <div
+      className={
+        "w-full rounded-full h-[1px] " + (color ? color : "bg-slate-400 ")
+      }
+    ></div>
   );
 }

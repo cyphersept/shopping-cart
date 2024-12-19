@@ -53,7 +53,7 @@ function productFactory(customProduct?: Partial<Product>) {
 
   const defaultProduct: Product = {
     itemId: nanoid(12),
-    name: lorem.generateWords(2),
+    name: lorem.generateWords(2).substring(0, 18),
     description: lorem.generateParagraphs(2),
     tags: [getRandomFromArr(tag1), getRandomFromArr(tag2)],
     sizes: getRandomSubarray(sizes).sort((a, b) => a - b),
