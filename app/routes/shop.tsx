@@ -4,7 +4,7 @@ import { SearchFilters } from "~/components/Filters";
 import { Pill } from "~/components/TextDecorations";
 import { getProducts, init } from "~/products";
 import { useLoaderData } from "react-router";
-import { ProductCard } from "~/components/ProductCard";
+import { ProductElement } from "~/components/ProductElement";
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   await init();
@@ -29,7 +29,7 @@ function ShopList({ classes = "" }) {
   return (
     <ul className={"list-none flex flex-wrap " + classes}>
       {products.map((p) => (
-        <ProductCard key={p.itemId} product={p} />
+        <ProductElement key={p.itemId} product={p} type="CARD" />
       ))}
     </ul>
   );

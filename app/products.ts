@@ -5,6 +5,7 @@ import type { Product, SaleInfo } from "./custom-types";
 import { productImages } from "./images";
 import { LoremIpsum } from "lorem-ipsum";
 import localforage from "localforage";
+import { createContext } from "react";
 
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
@@ -15,6 +16,12 @@ const lorem = new LoremIpsum({
     max: 20,
     min: 6,
   },
+});
+
+export const ProductContext = createContext({
+  product: generateProducts(1)[0],
+  sizeIndex: 0,
+  setSizeIndex: (sizeIndex: number) => {},
 });
 
 export async function init() {

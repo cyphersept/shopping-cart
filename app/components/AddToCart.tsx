@@ -1,8 +1,9 @@
 import type { Product } from "~/custom-types";
-import { useState, type SetStateAction } from "react";
+import { useContext, useState, type SetStateAction } from "react";
 
 import { addToCart } from "~/cart";
 import { FaMinus, FaPlus } from "react-icons/fa6";
+import { ProductContext } from "~/products";
 
 interface QSProps {
   quantity: number;
@@ -10,12 +11,11 @@ interface QSProps {
 }
 
 interface AddToCartProps {
-  product: Product;
-  sizeIndex: number;
   detailed?: boolean;
 }
 
-export function AddToCart({ product, sizeIndex, detailed }: AddToCartProps) {
+export function AddToCart({ detailed }: AddToCartProps) {
+  const { product, sizeIndex } = useContext(ProductContext);
   const [quantity, setQuantity] = useState(1);
   return (
     <div className="flex gap-4 flex-wrap">

@@ -1,4 +1,4 @@
-import { Form } from "react-router";
+import { Form, useSubmit } from "react-router";
 import { Accordion } from "./Accordion";
 import { useState } from "react";
 import { SearchBar } from "./Searchbar";
@@ -7,8 +7,9 @@ const c = "mr-2";
 const fsStyle = "flex flex-col gap-2";
 
 export function SearchFilters() {
+  const submit = useSubmit();
   return (
-    <Form className="w-60">
+    <Form className="w-60" onChange={(event) => submit(event.currentTarget)}>
       <legend className="text-2xl font-semibold mb-4">Filters</legend>
       <Accordion title="Price" inner={<Price />} />
       <Accordion title="Type" inner={<Type />} />
