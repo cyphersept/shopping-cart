@@ -8,6 +8,7 @@ export function NavBar() {
     { url: "/", text: "Home" },
     { url: "/shop", text: "Shop" },
     { url: "/about", text: "About" },
+    { url: "/cart", text: "Cart" },
   ];
   return (
     <nav className="flex bg-violet-400 items-center gap-4">
@@ -23,10 +24,10 @@ export function NavList(p: { navLinks: LinkObj[]; navStyle?: string }) {
       <NavLink
         className={({ isActive, isPending }) =>
           isPending
-            ? "hover-slide p-4 pending"
+            ? "pending " + p.navStyle
             : isActive
-            ? "hover-slide p-4 active"
-            : "hover-slide p-4"
+            ? "active " + p.navStyle
+            : p.navStyle
         }
         to={l.url}
       >

@@ -5,6 +5,7 @@ import { NavLink } from "react-router";
 import { ReviewStars } from "./Reviews";
 import { AddToCart } from "./AddToCart";
 import { ProductContext } from "~/products";
+import { CartItemContext } from "~/routes/Cart";
 
 function getPrice(product: Product, sizeIndex: number) {
   // Price of the currently selected product size
@@ -26,7 +27,7 @@ export function ProductElement({ product, type }: ProductElementType) {
     CARD: <ProductCard />,
     PAGE: <ProductPage />,
     FEATURE: <ProductPage />,
-    CART: <ProductPage />,
+    CART: <ProductInCart />,
   }[type];
 
   return (
@@ -90,6 +91,22 @@ function ProductPage() {
         <AddToCart detailed={true} />
       </section>
     </section>
+  );
+}
+
+function ProductInCart() {
+  const { product, sizeIndex } = useContext(ProductContext);
+  const { quantity, selectedSize } = useContext(CartItemContext);
+  return (
+    <li className="h-32 w-full flex gap-4">
+      <img src={product.imgSrc} alt={"Image of " + product.name} />
+      <div className="flex flex-col">
+        <h3 className="overflow-ellipsis">{product.name}</h3>
+        <div className="text-slate-400">
+          {getPrice(product, sizeIndex).toString} · {selectedSize}
+        </div>
+      </div>
+    </li>
   );
 }
 
