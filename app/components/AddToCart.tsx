@@ -1,13 +1,14 @@
-import type { Product } from "~/custom-types";
-import { useContext, useState, type SetStateAction } from "react";
+import { useState, type SetStateAction } from "react";
 
-import { addToCart } from "~/cart";
+import { useCart } from "~/cart";
 import { FaMinus, FaPlus } from "react-icons/fa6";
-import { ProductContext } from "~/products";
+import { useProductContext } from "~/contexts";
 
 interface QSProps {
   quantity: number;
-  setQuantity: React.Dispatch<SetStateAction<number>>;
+  setQuantity:
+    | React.Dispatch<SetStateAction<number>>
+    | ((arg0: number) => void);
 }
 
 interface AddToCartProps {
@@ -15,8 +16,9 @@ interface AddToCartProps {
 }
 
 export function AddToCart({ detailed }: AddToCartProps) {
-  const { product, sizeIndex } = useContext(ProductContext);
+  const { product, sizeIndex } = useProductContext();
   const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCart();
   return (
     <div className="flex gap-4 flex-wrap">
       {detailed && (
@@ -25,9 +27,7 @@ export function AddToCart({ detailed }: AddToCartProps) {
       <button
         type="button"
         className="p-[0.5em] bg-indigo-400 rounded-md grow-[100] hover:-translate-y-2  active:translate-y-0 transition-transform"
-        onClick={() =>
-          addToCart(product.itemId, product.sizes[sizeIndex], quantity)
-        }
+        onClick={() => addToCart(product, product.sizes[sizeIndex], quantity)}
       >
         Add to Cart
       </button>
@@ -35,10 +35,10 @@ export function AddToCart({ detailed }: AddToCartProps) {
   );
 }
 
-function QuantitySelect({ quantity, setQuantity }: QSProps) {
+export function QuantitySelect({ quantity, setQuantity }: QSProps) {
   const btnStyle =
     "py-2 px-4 h-full hover:-translate-y-1 active:!translate-y-1 transition-transform ";
-  const inBounds = (num: number) => Math.min(Math.max(num, 0), 99);
+  const inBounds = (num: number) => Math.min(Math.max(num, 1), 99);
 
   return (
     <div className="display flex grow border border-slate-50 rounded-lg items-center">

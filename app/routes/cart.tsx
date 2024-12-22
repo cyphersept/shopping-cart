@@ -1,44 +1,38 @@
-import { createContext } from "react";
-import { getProductById } from "~/products";
+import { formatPrice } from "~/products";
 import { CloseButton } from "../components/CloseButton";
 import type { CartItem } from "~/custom-types";
-import type { Route } from "../+types/root";
-import { getCart } from "~/cart";
-import { useLoaderData } from "react-router";
-import { ProductElement } from "~/components/ProductElement";
-
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  const cart = await getCart();
-  if (!cart) throw new Response("Not Found", { status: 404 });
-  return { cart };
-}
-
-const cartPlaceholder = { itemId: "", selectedSize: 0, quantity: 0 };
-export const CartItemContext = createContext<CartItem>(cartPlaceholder);
+import { useCart } from "~/cart";
+import { QuantitySelect } from "~/components/AddToCart";
 
 export default function CartMenu() {
-  const { cart }: { cart: CartItem[] } = useLoaderData();
-  const cartItems = cart.map((item) => <CartEntry item={item} />);
+  const { cart, cartSum } = useCart();
+  const cartItems = cart.map((item) => (
+    <CartEntry item={item} key={item.product.itemId} />
+  ));
 
   return (
     <aside className="absolute right-0 top-0 h-screen flex flex-col shadow-xl shadow-black bg-slate-900 [&>*]:px-8">
       <header className="text-4xl flex justify-between items-end py-6 gap-4">
-        <h2>My Cart ({cart.length}) </h2>
+        <h2>My Cart ({cart.length ?? 0}) </h2>
         <CloseButton />
       </header>
+
       {cart.length === 0 ? (
-        <div className="text-lg text-slate-500">No items yet</div>
+        <div className={"text-lg text-slate-500 mb-auto"}>No items yet</div>
       ) : (
-        <ul className="list-none">{cartItems}</ul>
+        <ul className="list-none flex flex-col gap-4 grow overflow-y-auto snap-y pb-6 ">
+          {cartItems}
+        </ul>
       )}
-      <footer className="mt-auto border-t border-slate-50 flex flex-col py-6">
+
+      <footer className="border-t border-slate-50 flex flex-col py-6">
         <div className="flex space-between">
           <span className="font-bold inline-block mr-auto">Subtotal: </span>
-          <span>$Placeholder </span>
+          <span>${cartSum(cart).toFixed(2)} </span>
         </div>
         <div className="flex space-between">
           <span className="font-bold inline-block mr-auto">Shipping: </span>
-          <span>$Placeholder </span>
+          <span>$4.99</span>
         </div>
         <button className="text-xl bg-indigo-500 rounded-lg p-4 mt-4 ">
           Proceed to Checkout
@@ -48,13 +42,35 @@ export default function CartMenu() {
   );
 }
 
-async function CartEntry({ item }: { item: CartItem }) {
-  const product = await getProductById(item.itemId);
-  return product ? (
-    <CartItemContext.Provider value={item}>
-      <ProductElement key={item.itemId} product={product} type="CART" />
-    </CartItemContext.Provider>
-  ) : (
-    <></>
-  );
+function CartEntry({ item }: { item: CartItem }) {
+  const { changeQuantityInCart } = useCart();
+  const product = item.product;
+
+  if (product)
+    return (
+      <li className="h-32 w-full flex gap-4 snap-start">
+        <img
+          className="h-full w-auto"
+          src={product.imgSrc}
+          alt={"Image of " + product.name}
+        />
+        <div className="flex flex-col  ">
+          <h3 className="whitespace-nowrap overflow-hidden overflow-ellipsis capitalize text-xl ">
+            {product.name}
+          </h3>
+          <div className="text-slate-400 text-sm">ID: {product.itemId}</div>
+          <div className="my-1">
+            {formatPrice(product.price * item.selectedSize)} ·{" "}
+            {item.selectedSize} oz
+          </div>
+          <div>
+            <QuantitySelect
+              quantity={item.quantity}
+              setQuantity={(n: number) => changeQuantityInCart(product, n)}
+            />
+          </div>
+        </div>
+      </li>
+    );
+  else return <></>;
 }

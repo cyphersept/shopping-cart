@@ -5,7 +5,7 @@ import type { Product, SaleInfo } from "./custom-types";
 import { productImages } from "./images";
 import { LoremIpsum } from "lorem-ipsum";
 import localforage from "localforage";
-import { createContext } from "react";
+import { useEffect, useState } from "react";
 
 const lorem = new LoremIpsum({
   sentencesPerParagraph: {
@@ -18,36 +18,57 @@ const lorem = new LoremIpsum({
   },
 });
 
-export const ProductContext = createContext({
-  product: generateProducts(1)[0],
-  sizeIndex: 0,
-  setSizeIndex: (sizeIndex: number) => {},
-});
+// Contexts used throughout app
 
+// Generates list of random products if one does not already exist
 export async function init() {
-  const productList = await getProducts();
-  if (productList.length == 0)
-    await localforage.setItem("products", generateProducts(18));
+  const productList: Product[] = (await localforage.getItem("products")) ?? [];
+  if (productList.length == 0) {
+    const newProducts = generateProducts(18);
+    await localforage.setItem("products", newProducts);
+    return newProducts;
+  } else return productList;
 }
 
-export async function getProducts() {
-  const result: Product[] = (await localforage.getItem("products")) ?? [];
-  return result;
+// export async function getProducts() {
+//   const result: Product[] = (await localforage.getItem("products")) ?? [];
+//   return result;
+// }
+
+// Displays price as pretty currency string
+export function formatPrice(price: number) {
+  return price % 1 === 0 ? "$" + price : "$" + price.toFixed(2);
 }
 
-export async function getProductById(targetId: string) {
-  const list = (await getProducts()) ?? [];
-  return list.find((item) => item.itemId === targetId) ?? false;
+export function useProducts() {
+  const [products, setProducts] = useState([] as Product[]);
+
+  useEffect(() => {
+    const init = async () => {
+      const productList: Product[] =
+        (await localforage.getItem("products")) ?? [];
+      if (productList.length == 0) {
+        const newProducts = generateProducts(18);
+        setProducts(newProducts);
+        localforage.setItem("products", newProducts);
+      } else setProducts(productList);
+    };
+    init();
+  }, []);
+}
+
+// Returns product for a given product ID
+export function getProductById(targetId: string, products: Product[]) {
+  return products.find((item) => item.itemId === targetId) ?? false;
 }
 
 // Find product matching query string in search set
-export async function findProducts(query: string, searchSet?: Product[]) {
+export function findProducts(query: string, searchSet: Product[]) {
   const searchKeys = ["name", "description", "tags"];
-  let products = searchSet ? searchSet : (await getProducts()) ?? [];
-  return matchSorter(products, query, { keys: searchKeys });
+  return matchSorter(searchSet, query, { keys: searchKeys });
 }
 
-export async function sortProducts(list: Product[]) {
+export function sortProducts(list: Product[]) {
   return list;
 }
 
@@ -109,18 +130,18 @@ function getRandomSubarray(array: any[]) {
 }
 
 // Applies all relevant sales to an item's list price to find sale price
-export async function getSalePrice(targetId: string) {
-  const product = await getProductById(targetId);
+// export async function getSalePrice(targetId: string) {
+//   const product = await getProductById(targetId);
 
-  // Return false if product not found
-  if (!product) return false;
+//   // Return false if product not found
+//   if (!product) return false;
 
-  const sales: SaleInfo[] = await getSales();
-  const matchingSales = sales.filter((s) => s.itemId === targetId);
+//   const sales: SaleInfo[] = await getSales();
+//   const matchingSales = sales.filter((s) => s.itemId === targetId);
 
-  // Applies each sale formula to the base price
-  matchingSales.reduce((acc, s) => s.formula(acc), product.price);
-}
+//   // Applies each sale formula to the base price
+//   matchingSales.reduce((acc, s) => s.formula(acc), product.price);
+// }
 
 // Get list of all ongoing sales
 export async function getSales() {

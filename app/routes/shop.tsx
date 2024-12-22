@@ -1,17 +1,8 @@
-import type { Route } from "./+types/shop";
 import type { Product } from "~/custom-types";
 import { SearchFilters } from "~/components/Filters";
-import { Pill } from "~/components/TextDecorations";
-import { getProducts, init } from "~/products";
-import { useLoaderData } from "react-router";
-import { ProductElement } from "~/components/ProductElement";
-
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  await init();
-  const products = await getProducts();
-  if (!products) throw new Response("Not Found", { status: 404 });
-  return { products };
-}
+import { AllProductsContext } from "~/contexts";
+import { ProductCard } from "~/components/ProductElement";
+import { useContext } from "react";
 
 export default function Shop() {
   return (
@@ -25,11 +16,11 @@ export default function Shop() {
 }
 
 function ShopList({ classes = "" }) {
-  const { products }: { products: Product[] } = useLoaderData();
+  const products: Product[] = useContext(AllProductsContext);
   return (
     <ul className={"list-none flex flex-wrap " + classes}>
       {products.map((p) => (
-        <ProductElement key={p.itemId} product={p} type="CARD" />
+        <ProductCard key={p.itemId} product={p} />
       ))}
     </ul>
   );

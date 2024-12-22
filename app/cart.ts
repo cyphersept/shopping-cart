@@ -1,65 +1,100 @@
-import type { CartItem } from "./custom-types";
-import { getSalePrice } from "./products";
+import { useEffect, useState } from "react";
+import type { CartItem, Product } from "./custom-types";
 import localforage from "localforage";
 
 // Fetch array containing itemID and quantities of items in cart
-export async function getCart() {
+export async function getSavedCart() {
   let cart: CartItem[] = (await localforage.getItem("cart")) ?? [];
   return cart;
 }
 
-// Add (addQuantity) instaces of item with ID to saved cart values
-export async function addToCart(
-  myItemId: string,
-  itemSize: number,
-  addQuantity = 1
-) {
-  let cart: CartItem[] = await getCart();
+export function useCart() {
+  const [cart, setCart] = useState([] as CartItem[]);
 
-  // If item is already in the cart, increase its quantity; else add it
-  const existing = cart.find((item) => item.itemId === myItemId);
-  if (existing) existing.quantity += addQuantity;
-  else
-    cart.push({
-      itemId: myItemId,
-      selectedSize: itemSize,
-      quantity: addQuantity,
-    });
+  // Find cart stored in cookies
+  useEffect(() => {
+    const fetchData = async () => {
+      setCart(await getSavedCart());
+    };
+    fetchData().catch(console.error);
+  }, []);
 
-  // Save updated cart state
-  await localforage.setItem("cart", cart);
+  useEffect;
+
+  // Add (addQuantity) instaces of item with ID to saved cart values
+  function addToCart(myProd: Product, itemSize: number, addQuantity = 1) {
+    // If item is already in the cart, increase its quantity; else add it
+    const existing = cart.find((item) => item.product.itemId === myProd.itemId);
+    if (existing) existing.quantity += addQuantity;
+    else
+      cart.push({
+        product: myProd,
+        selectedSize: itemSize,
+        quantity: addQuantity,
+      });
+
+    // Update cart and save state
+    setCart(cart);
+    localforage.setItem("cart", cart);
+  }
+
+  // Remove items from cart
+  function removeFromCart(myProd: Product, rmvQuantity: number) {
+    const index = cart.findIndex(
+      (item) => item.product.itemId === myProd.itemId
+    );
+
+    // Decrease item quantity in cart
+    if (index > -1) {
+      cart[index].quantity -= rmvQuantity;
+
+      // Remove items with no quantity
+      if (cart[index].quantity <= 0) cart.splice(index, 1);
+
+      // Updates cart and saves state
+      setCart(cart);
+      localforage.setItem("cart", cart);
+      return true;
+    } else return false;
+  }
+
+  function changeQuantityInCart(myProd: Product, newQuantity: number) {
+    const index = cart.findIndex(
+      (item) => item.product.itemId === myProd.itemId
+    );
+
+    // Decrease item quantity in cart
+    if (index > -1) {
+      cart[index].quantity = newQuantity;
+
+      // Updates cart and saves state
+      setCart(cart);
+      localforage.setItem("cart", cart);
+      return true;
+    } else return false;
+  }
+
+  // Calculate subtotal for each item in cart
+  function cartSum(input: CartItem[]) {
+    const sum = input
+      .map((item) => {
+        const p = item.product;
+        const itemSubtotal = !p
+          ? 0
+          : p.price * item.selectedSize * item.quantity;
+        return itemSubtotal;
+      })
+      // Add up costs of each item
+      .reduce((acc, curr) => acc + curr, 0);
+    return sum;
+  }
+
+  return { cart, addToCart, changeQuantityInCart, removeFromCart, cartSum };
 }
 
 // Remove (rmvQuantity) instaces of item with ID from saved cart values
-export async function removeFromCart(myItemId: string, rmvQuantity: number) {
-  const cart: CartItem[] = await getCart();
-  const index = cart.findIndex((item) => item.itemId === myItemId);
-
-  // Decrease item quantity in cart
-  if (index > -1) {
-    cart[index].quantity -= rmvQuantity;
-
-    // Remove items with no quantity
-    if (cart[index].quantity <= 0) cart.splice(index, 1);
-
-    // Save updated cart state
-    await localforage.setItem("cart", cart);
-    return true;
-  } else return false;
-}
 
 // Gets sum total of cart items according to their sale prices
-export async function cartSum() {
-  const cart = await getCart();
-  const pricePromises = Promise.all(
-    cart.map(async (item) => {
-      const truePrice = await getSalePrice(item.itemId);
-      return truePrice ? item.quantity * item.selectedSize * truePrice : 0;
-    })
-  );
-  const cartSum = (await pricePromises).reduce((acc, curr) => acc + curr, 0);
-  return cartSum;
-}
 
 export function calcTaxShipping(base: number, taxRate: number, ship: number) {
   return base * taxRate + ship;

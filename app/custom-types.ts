@@ -32,7 +32,7 @@ export interface Product {
 }
 
 export interface CartItem {
-  itemId: string;
+  product: Product;
   selectedSize: number;
   quantity: number;
 }

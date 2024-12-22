@@ -1,20 +1,44 @@
-import { NavLink, Outlet, useRouteError } from "react-router";
+import { Outlet, useRouteError } from "react-router";
 import { NavBar } from "~/components/NavBar";
-import { Logo } from "../components/Logo";
 import { isRouteErrorResponse } from "react-router";
 import { Footer } from "~/components/Footer";
+import { init } from "~/products";
+import { AllProductsContext } from "~/contexts";
+import { useEffect, useState } from "react";
+import type { Product } from "~/custom-types";
 
 export default function NavBarLayout() {
+  const [products, setProducts] = useState([] as Product[]);
+
+  // Find cart stored in cookies
+  useEffect(() => {
+    const fetchData = async () => {
+      const productData = await init();
+      setProducts(productData);
+    };
+    fetchData().catch(console.error);
+  }, []);
   return (
     <>
       <NavBar />
-      <main>
-        <Outlet />
-        {/* <ErrorBoundary>
+      <AllProductsContext.Provider value={products}>
+        <main>
+          <Outlet />
+          {/* <ErrorBoundary>
         </ErrorBoundary> */}
-      </main>
+        </main>
+      </AllProductsContext.Provider>
       <Footer />
     </>
+  );
+}
+
+export function HydrateFallback() {
+  return (
+    <div id="loading-splash">
+      <div id="loading-splash-spinner" />
+      <p>Loading, please wait...</p>
+    </div>
   );
 }
 
