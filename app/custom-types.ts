@@ -1,6 +1,4 @@
 import type { ReactNode } from "react";
-import type { URL } from "url";
-
 export interface LinkObj {
   url: string;
   text: string;
@@ -35,6 +33,7 @@ export interface CartItem {
   product: Product;
   selectedSize: number;
   quantity: number;
+  setQuantity?: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export interface SaleInfo {

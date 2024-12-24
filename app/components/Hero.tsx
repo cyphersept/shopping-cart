@@ -1,6 +1,6 @@
 import type { HeroObj } from "~/custom-types";
 
-export function HeroBanner(content: HeroObj) {
+export function HeroBanner({ content }: { content: HeroObj }) {
   return (
     <header className="flex items-center gap-8 p-16 relative">
       <img

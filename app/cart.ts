@@ -19,7 +19,7 @@ export function useCart() {
     fetchData().catch(console.error);
   }, []);
 
-  useEffect;
+  useEffect(() => {}, [cart]);
 
   // Add (addQuantity) instaces of item with ID to saved cart values
   function addToCart(myProd: Product, itemSize: number, addQuantity = 1) {
@@ -65,11 +65,16 @@ export function useCart() {
 
     // Decrease item quantity in cart
     if (index > -1) {
+      console.log(cart);
       cart[index].quantity = newQuantity;
 
       // Updates cart and saves state
+      if (cart[index].setQuantity) cart[index].setQuantity(newQuantity);
       setCart(cart);
-      localforage.setItem("cart", cart);
+      console.log(cart);
+      localforage
+        .setItem("cart", cart)
+        .then(() => console.log("Cart saved to localforage"));
       return true;
     } else return false;
   }
