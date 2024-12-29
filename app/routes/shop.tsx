@@ -6,7 +6,7 @@ import { useContext } from "react";
 
 export default function Shop() {
   return (
-    <section className="p-12 flex gap-12">
+    <section className="p-12 flex gap-12 bg-heather-100">
       <aside>
         <SearchFilters />
       </aside>

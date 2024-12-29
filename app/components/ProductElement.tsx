@@ -3,31 +3,9 @@ import { useEffect, useState } from "react";
 import { Pill, Separator } from "~/components/TextDecorations";
 import { NavLink } from "react-router";
 import { ReviewStars } from "./Reviews";
-import { AddToCart, QuantitySelect } from "./AddToCart";
+import { AddToCart } from "./AddToCart";
 import { ProductContext, useProductContext } from "~/contexts";
 import { formatPrice } from "~/products";
-
-interface ProductElementType {
-  product: Product;
-  type: "CARD" | "PAGE" | "FEATURE" | "CART";
-}
-
-// Selects appropriate component for displaying product information
-// export function ProductElement({ product, type }: ProductElementType) {
-//   const [sizeIndex, setSizeIndex] = useState(0);
-//   const displayElement = {
-//     CARD: <ProductCard />,
-//     PAGE: <ProductPage />,
-//     FEATURE: <ProductPage />,
-//     CART: <ProductInCart />,
-//   }[type];
-
-//   return (
-//     <ProductContext.Provider value={{ product, sizeIndex, setSizeIndex }}>
-//       {displayElement}
-//     </ProductContext.Provider>
-//   );
-// }
 
 // Compact inline card display for a product
 export function ProductCard({ product }: { product: Product }) {
@@ -41,6 +19,7 @@ export function ProductCard({ product }: { product: Product }) {
           src={product.imgSrc}
           alt={"Image of " + product.name}
           className="object-cover aspect-[4/3] "
+          loading="lazy"
         />
         <h3 className="text-2xl capitalize pb-1">
           <NavLink
@@ -71,7 +50,11 @@ export function ProductPage({ product }: { product: Product }) {
     <ProductContext.Provider value={{ product, sizeIndex, setSizeIndex }}>
       <section className="card p-16 flex gap-16 w-full ">
         <div className="grow w-auto ">
-          <img src={product.imgSrc} alt={"Image of " + product.name} />
+          <img
+            src={product.imgSrc}
+            alt={"Image of " + product.name}
+            loading="lazy"
+          />
         </div>
 
         <section className="flex flex-col gap-6 min-w-[35%] w-96">
@@ -100,7 +83,7 @@ function TagList({ tags, classes }: { tags: string[]; classes?: string }) {
   return (
     <ul className={"capitalize flex gap-2 list-none " + classes}>
       {tags.map((t) => (
-        <Pill key={t} classes="text-indigo-900 bg-indigo-200">
+        <Pill key={t} classes="text-heather-950 bg-heather-200">
           {t}
         </Pill>
       ))}
@@ -137,7 +120,7 @@ function JumpButton({
   const { sizeIndex, setSizeIndex } = useProductContext();
   const [effect, setEffect] = useState(false);
   const style = [
-    "rounded-lg transition-colors whitespace-nowrap",
+    "rounded-lg transition-colors text-white whitespace-nowrap ",
     effect ? "animate-lift" : "",
     classes ? classes : "py-[0.25em] px-[0.5em]",
   ].join(" ");
@@ -146,7 +129,7 @@ function JumpButton({
       type="button"
       className={
         index === sizeIndex
-          ? style + " bg-indigo-400"
+          ? style + " bg-heather-500"
           : style + " bg-slate-700 hover:bg-slate-800 "
       }
       onClick={() => {

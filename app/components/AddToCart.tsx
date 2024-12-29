@@ -3,6 +3,7 @@ import { useState, type SetStateAction } from "react";
 import { useCart } from "~/cart";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { useProductContext } from "~/contexts";
+import { SlideButton } from "./Button";
 
 interface QSProps {
   quantity: number;
@@ -24,13 +25,12 @@ export function AddToCart({ detailed }: AddToCartProps) {
       {detailed && (
         <QuantitySelect quantity={quantity} setQuantity={setQuantity} />
       )}
-      <button
-        type="button"
-        className="p-[0.5em] bg-indigo-400 rounded-md grow-[100] hover:-translate-y-2  active:translate-y-0 transition-transform"
+      <SlideButton
         onClick={() => addToCart(product, product.sizes[sizeIndex], quantity)}
+        classes="!p-[0.5em] !grow-[100] !text-lg"
       >
-        Add to Cart
-      </button>
+        <span>Add to Cart</span>
+      </SlideButton>
     </div>
   );
 }

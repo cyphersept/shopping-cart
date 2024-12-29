@@ -7,7 +7,7 @@ export function Pill({ children, ...props }: PillProps): React.ReactElement {
   return (
     <div
       className={
-        "rounded-xl color-slate-800 bg-violet-200 px-[1em] py-[0.5em] text-center " +
+        "rounded-xl bg-heather-200 px-[1em] py-[0.5em] text-center " +
         props.classes
       }
     >

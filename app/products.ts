@@ -76,7 +76,14 @@ export function sortProducts(list: Product[]) {
 function productFactory(customProduct?: Partial<Product>) {
   const sizes = [1, 1.5, 2, 3, 4, 8];
   const prices = [4, 5, 6, 7, 9, 11, 12, 15, 18, 19, 21, 24, 28, 29, 30];
-  const tag1 = ["Green Tea", "White Tea", "Black Tea"];
+  const tag1 = [
+    "Green Tea",
+    "White Tea",
+    "Black Tea",
+    "Rooibos Tea",
+    "Oolong Tea",
+    "Infusions",
+  ];
   const tag2 = ["Herbal Tea", "Fruit Tea", "Floral Tea"];
 
   const defaultProduct: Product = {

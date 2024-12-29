@@ -3,6 +3,9 @@ import { Welcome } from "../welcome/welcome";
 import { CallToAction } from "~/components/CallToAction";
 import { HeroBanner } from "~/components/Hero";
 import bannerImg from "../images/banner.jpg";
+import { Featured } from "~/components/Featured";
+import { productImages } from "~/images";
+import { SVGFrame } from "~/components/SVGFrame";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,13 +19,21 @@ export default function Home() {
     <>
       <HeroBanner
         content={{
-          title: "All-natural herbal teas for every occasion",
+          title: "Natural Cure",
           imgSrc: bannerImg,
           description:
-            "All-natural herbal rememdies for every ailment and occasion",
+            "Creating delicious, organic blends and all-natural herbal remedies for every ailment and occasion since 1973.",
         }}
+        link={{ text: "Shop Now", url: "/shop" }}
       />
-      <Welcome />
+      <Featured
+        title="Shop Categories"
+        items={[
+          { url: "/shop", text: "Featured", imgSrc: productImages[0] },
+          { url: "/shop", text: "New Products", imgSrc: productImages[1] },
+          { url: "/shop", text: "Deals", imgSrc: productImages[2] },
+        ]}
+      />
       <CallToAction />
     </>
   );

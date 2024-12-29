@@ -6,24 +6,24 @@ import { NavList } from "./NavBar";
 
 export function Footer() {
   const socials = [
-    { url: "", label: "twitter link", icon: <FaTwitter /> },
-    { url: "", label: "instagram link", icon: <FaInstagram /> },
-    { url: "", label: "facebook link", icon: <FaFacebook /> },
+    { url: "/", text: "twitter link", icon: <FaTwitter /> },
+    { url: "/", text: "instagram link", icon: <FaInstagram /> },
+    { url: "/", text: "facebook link", icon: <FaFacebook /> },
   ];
   return (
-    <footer className="flex flex-wrap justify-center mt-auto p-16 gap-x-16 gap-y-4 text-lg bg-slate-500 ">
+    <footer className="flex flex-wrap text-heather-50 justify-center mt-auto p-16 gap-x-16 gap-y-4 text-lg bg-heather-700 ">
       <div className="cta md:w-[calc(50%-2rem)] align-text-bottom ">
         Sign up to our newsletter to get the latest deals delivered straight to
         your inbox!
       </div>
       <Form className=" md:w-[calc(50%-2rem)] flex flex-wrap gap-x-16 gap-y-4 items-baseline">
-        <label className="">
-          Your email
+        <label>
+          <span className="mr-6 inline-block">Your email</span>
           <input
             type="email"
             name="email"
             id="email"
-            className="ml-4 w-auto border-b-2 border-white "
+            className="w-auto border-b-2 border-white "
           />
         </label>
         <button
@@ -44,23 +44,23 @@ export function Footer() {
 
 function Sitemaps({ classes }: { classes: string }) {
   const help = [
-    { url: "/faq", text: "FAQ" },
-    { url: "/support", text: "Support" },
-    { url: "/contact", text: "Contact" },
+    { url: "/", text: "FAQ" },
+    { url: "/", text: "Support" },
+    { url: "/", text: "Contact" },
   ];
   const other = [
-    { url: "/privacy", text: "Privacy" },
-    { url: "/sitemap", text: "Sitemap" },
-    { url: "/subscription", text: "Subscription" },
+    { url: "/", text: "Privacy" },
+    { url: "/", text: "Sitemap" },
+    { url: "/", text: "Subscription" },
   ];
   return (
     <div className={"section flex gap-16 " + classes}>
       <div className="flex flex-col gap-2">
-        <h3 className="font-bold">Help</h3>
+        <h3 className="text-2xl">Help</h3>
         <NavList navLinks={help} />
       </div>
       <div className="flex flex-col gap-2">
-        <h3 className="font-bold">Other</h3>
+        <h3 className="text-2xl">Other</h3>
         <NavList navLinks={other} />
       </div>
     </div>
