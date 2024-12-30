@@ -6,7 +6,7 @@ import border from "../images/border_top_tint.png";
 
 export function CallToAction() {
   return (
-    <section className="text-indigo-950 bg-heather-100 dark:bg-[#26233d] dark:text-heather-300  00 p-16 flex flex-col items-center gap-4 font-serif relative overflow-hidden [&>*]:z-10">
+    <section className="text-indigo-950 bg-heather-100 dark:bg-obsidian dark:text-heather-300  00 p-16 flex flex-col items-center gap-4 font-serif relative overflow-hidden [&>*]:z-10">
       <h2 className="text-5xl">Love our tea?</h2>
       <p className="text-xl text-center [word-spacing:1.5px] dark:text-heather-400">
         Sign up for a yearly subscription and save 40% on each order! You'll get
@@ -28,7 +28,7 @@ export function CallToAction() {
             Subscribe Now
           </NavLink>
         </SlideButton>
-        <p className="text-stroke bg-gradient-to-b from-transparent to-transparent via-heather-100 z-[5] text-indigo-950 dark:bg-none dark:text-heather-400 mb-12">
+        <p className="text-stroke bg-gradient-to-b from-transparent to-transparent via-heather-100 z-[5] text-indigo-950 dark:bg-none dark:text-heather-400 mt-4 mb-12">
           Existing subscriber?
           <span className="underline text-sm"> Manage your subscription</span>.
         </p>
@@ -36,7 +36,7 @@ export function CallToAction() {
       <img
         src={border}
         alt=""
-        className="absolute w-full h-auto opacity-90 -scale-y-100 -bottom-4 mix-blend-multiply !z-0"
+        className="absolute w-full h-auto opacity-90 dark:opacity-60 dark:mix-blend-color-burn -scale-y-100 -bottom-4 mix-blend-multiply !z-0"
       />
     </section>
   );
@@ -44,11 +44,12 @@ export function CallToAction() {
 
 function CTAItem({ icon, text }: { icon: ReactNode; text: string }) {
   const glass =
-    "bg-violet-900/20 shadow-lg bg-gradient-to-t from-violet-200/40 via-heather-400/30 to-violet-950/25 dark:from-heather-400/30 dark:to-heather-950/20 transition-transform hover:-translate-y-4 ";
+    "bg-violet-900/20 shadow-lg bg-gradient-to-t from-violet-200/40 via-heather-400/30 to-violet-950/25 dark:from-heather-400/40 dark:to-heather-800/20 ";
+  const hJump = " transition-transform hover:-translate-y-4 ";
   return (
     <li
       className={
-        "flex flex-col items-center gap-2 p-6 rounded-lg w-48 " + glass
+        "flex flex-col items-center gap-2 p-6 rounded-lg w-48 " + hJump + glass
       }
     >
       <div className="text-[6rem]">{icon}</div>

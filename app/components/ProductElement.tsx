@@ -6,22 +6,25 @@ import { ReviewStars } from "./Reviews";
 import { AddToCart } from "./AddToCart";
 import { ProductContext, useProductContext } from "~/contexts";
 import { formatPrice } from "~/products";
+import { JumpButton } from "./Button";
 
 // Compact inline card display for a product
 export function ProductCard({ product }: { product: Product }) {
   const [sizeIndex, setSizeIndex] = useState(0);
   const priceString = formatPrice(product.price * product.sizes[sizeIndex]);
+  const glass =
+    " bg-violet-900/20 shadow-xl bg-gradient-to-t from-heather-100/60 via-heather-400/30 to-heather-600/40 dark:from-heather-400/60 dark:to-heather-800/20 dark:text-heather-200 dark:shadow-heather-600/30";
 
   return (
     <ProductContext.Provider value={{ product, sizeIndex, setSizeIndex }}>
-      <li className="card p-4 flex flex-col gap-4 border border-slate-50 w-80">
+      <li className={"card p-6 flex flex-col gap-4 grow w-80" + glass}>
         <img
           src={product.imgSrc}
           alt={"Image of " + product.name}
-          className="object-cover aspect-[4/3] "
+          className="object-cover aspect-[4/3] shadow-lg drop-shadow-sm shadow-obsidian/15"
           loading="lazy"
         />
-        <h3 className="text-2xl capitalize pb-1">
+        <h3 className="text-2xl capitalize pb-1 dark:text-heather-50">
           <NavLink
             to={"product/" + product.itemId}
             className="hover-slide pb-2"
@@ -48,7 +51,7 @@ export function ProductPage({ product }: { product: Product }) {
 
   return (
     <ProductContext.Provider value={{ product, sizeIndex, setSizeIndex }}>
-      <section className="card p-16 flex gap-16 w-full ">
+      <section className="p-16 flex gap-16 w-full bg-gradient-to-t from-violet-300/20 via-heather-50 to-heather-50 dark:from-heather-400/80 dark:via-heather-800/20 dark:to-obsidian ">
         <div className="grow w-auto ">
           <img
             src={product.imgSrc}
@@ -59,12 +62,18 @@ export function ProductPage({ product }: { product: Product }) {
 
         <section className="flex flex-col gap-6 min-w-[35%] w-96">
           <h1 className="text-6xl capitalize ">{product.name}</h1>
-          <ReviewStars count={product.reviews} avg={product.rating} />
+          <ReviewStars
+            count={product.reviews}
+            avg={product.rating}
+            classes="dark:text-heather-200"
+          />
           <h2 className="text-3xl">{priceString}</h2>
           <Separator />
           <div>
             <h2 className="text-2xl mb-2">Description</h2>
-            <div className="flex flex-col gap-2">{paragraphs}</div>
+            <div className="flex flex-col gap-2 dark:text-heather-200">
+              {paragraphs}
+            </div>
           </div>
           <TagList tags={product.tags} />
           <div>
@@ -83,7 +92,7 @@ function TagList({ tags, classes }: { tags: string[]; classes?: string }) {
   return (
     <ul className={"capitalize flex gap-2 list-none " + classes}>
       {tags.map((t) => (
-        <Pill key={t} classes="text-heather-950 bg-heather-200">
+        <Pill key={t} classes="text-heather-950 bg-heather-200 shadow-sm">
           {t}
         </Pill>
       ))}
@@ -105,40 +114,5 @@ function SizeList({ classes = "", btnClasses = "" }) {
         </li>
       ))}
     </ul>
-  );
-}
-
-function JumpButton({
-  children,
-  index,
-  classes,
-}: {
-  children: React.ReactNode;
-  index: number;
-  classes?: string;
-}) {
-  const { sizeIndex, setSizeIndex } = useProductContext();
-  const [effect, setEffect] = useState(false);
-  const style = [
-    "rounded-lg transition-colors text-white whitespace-nowrap ",
-    effect ? "animate-lift" : "",
-    classes ? classes : "py-[0.25em] px-[0.5em]",
-  ].join(" ");
-  return (
-    <button
-      type="button"
-      className={
-        index === sizeIndex
-          ? style + " bg-heather-500"
-          : style + " bg-slate-700 hover:bg-slate-800 "
-      }
-      onClick={() => {
-        setSizeIndex(index);
-        setEffect(true);
-      }}
-      onAnimationEnd={() => setEffect(false)}
-    >
-      {children}
-    </button>
   );
 }

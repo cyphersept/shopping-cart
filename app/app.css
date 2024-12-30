@@ -2,17 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-html,
-body {
-  @apply bg-heather-100 text-indigo-950 dark:text-heather-50 dark:bg-gray-950 h-full;
-
+:root {
   @media (prefers-color-scheme: light) {
     color-scheme: light;
+    --decal-col: theme("colors.heather.900");
   }
 
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
+    --decal-col: theme("colors.heather.300");
   }
+}
+html,
+body {
+  @apply bg-heather-100 text-indigo-950 dark:text-heather-50 dark:bg-obsidian h-full;
 }
 
 a:hover {
@@ -52,12 +55,12 @@ main .hover-slide {
     height: 5px;
     background: linear-gradient(
       to bottom,
-      theme("colors.heather.900"),
-      theme("colors.heather.900") 40%,
+      var(--decal-col),
+      var(--decal-col) 40%,
       transparent 40%,
       transparent 60%,
-      theme("colors.heather.900") 60%,
-      theme("colors.heather.900") 100%
+      var(--decal-col) 60%,
+      var(--decal-col) 100%
     );
     bottom: 0.25em;
     left: 0;

@@ -1,4 +1,5 @@
-import type { PropsWithChildren } from "react";
+import { useState, type PropsWithChildren } from "react";
+import { useProductContext } from "~/contexts";
 
 interface ButtonProps {
   onClick?: () => void;
@@ -15,11 +16,46 @@ export function SlideButton({
     <button
       type={props.type ?? "button"}
       className={
-        "text-2xl my-4 border-double border-4 outline-4 outline outline-heather-500 py-3 px-20 text-heather-50 bg-heather-500 relative shadow-2xl transition-all before:absolute before:left-0 before:top-0 before:h-full before:w-0 before:bg-heather-200 before:mix-blend-multiply before:transition-all before:duration-500 hover:before:w-full grow [&>*]:relative [&>*]:z-10 " +
+        "text-2xl border-double border-4 outline-4 outline outline-heather-500 py-3 px-20 text-heather-50 bg-heather-500 relative shadow-2xl transition-all before:absolute before:left-0 before:top-0 before:h-full before:w-0 before:bg-heather-400 before:mix-blend-multiply before:transition-all before:duration-500 hover:before:w-full grow [&>*]:relative [&>*]:z-10 " +
         props.classes
       }
       onClick={props.onClick}
       disabled={props.disabled}
+    >
+      {children}
+    </button>
+  );
+}
+
+export function JumpButton({
+  children,
+  index,
+  classes,
+}: {
+  children: React.ReactNode;
+  index: number;
+  classes?: string;
+}) {
+  const { sizeIndex, setSizeIndex } = useProductContext();
+  const [effect, setEffect] = useState(false);
+  const style = [
+    "rounded-lg transition-colors text-white shadow-sm whitespace-nowrap ",
+    effect ? "animate-lift" : "",
+    classes ? classes : "py-[0.25em] px-[0.5em]",
+  ].join(" ");
+  return (
+    <button
+      type="button"
+      className={
+        index === sizeIndex
+          ? style + " bg-heather-500 dark:bg-heather-400"
+          : style + " bg-indigo-900 hover:bg-black saturate-50"
+      }
+      onClick={() => {
+        setSizeIndex(index);
+        setEffect(true);
+      }}
+      onAnimationEnd={() => setEffect(false)}
     >
       {children}
     </button>

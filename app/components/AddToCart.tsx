@@ -21,13 +21,13 @@ export function AddToCart({ detailed }: AddToCartProps) {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
   return (
-    <div className="flex gap-4 flex-wrap">
+    <div className="flex gap-8 flex-wrap">
       {detailed && (
         <QuantitySelect quantity={quantity} setQuantity={setQuantity} />
       )}
       <SlideButton
         onClick={() => addToCart(product, product.sizes[sizeIndex], quantity)}
-        classes="!p-[0.5em] !grow-[100] !text-lg"
+        classes="!p-[0.5em] !grow-[100] !text-lg !shadow-md dark:bg-indigo-900 dark:outline-indigo-900 dark:border-slate-300 dark:saturate-50 "
       >
         <span>Add to Cart</span>
       </SlideButton>
@@ -41,7 +41,7 @@ export function QuantitySelect({ quantity, setQuantity }: QSProps) {
   const inBounds = (num: number) => Math.min(Math.max(num, 1), 99);
 
   return (
-    <div className="display flex grow border border-slate-50 rounded-lg items-center">
+    <div className="display flex grow border-2 border-heather-500 dark:border-slate-50 rounded-lg items-center">
       <button
         type="button"
         onClick={() => setQuantity(inBounds(quantity - 1))}
@@ -54,7 +54,7 @@ export function QuantitySelect({ quantity, setQuantity }: QSProps) {
         name="item-quantity"
         aria-label="Input quantity"
         value={quantity}
-        className="border-x border-slate-50 p-2 text-center w-20 h-full grow overflow-hidden "
+        className="border-x-2 border-heather-500 dark:border-slate-50 p-2 text-center w-20 h-full grow overflow-hidden "
         onChange={(e) => {
           // Control and validate input: only quantities above 0
           const validateInt = parseInt(e.target.value);

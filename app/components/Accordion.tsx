@@ -11,13 +11,18 @@ export function Accordion(props: {
   const toggle = () => setOpenState(!openState);
   const s = " shadow-[inset_0_1px_0_0_theme(colors.slate.50)] ";
   const o = openState
-    ? "max-h-40 duration-300 ease-out"
-    : "max-h-0 duration-400 ease-in-out";
+    ? " max-h-60 duration-300 ease-out"
+    : " max-h-0 duration-400 ease-in-out";
   const arrowIcon = openState ? <FaChevronUp /> : <FaChevronDown />;
   const up = openState ? " -rotate-180" : " rotate-0";
 
   return (
-    <div className={"accordion border border-slate-50" + props.classes}>
+    <div
+      className={
+        "accordion border-t border-violet-900/80 dark:border-slate-50 " +
+        props.classes
+      }
+    >
       <button
         type="button"
         onClick={toggle}
@@ -28,8 +33,8 @@ export function Accordion(props: {
         {props.title}
         <FaChevronDown className={"transition-transform" + up} />
       </button>
-      <div className={"overflow-hidden transition-[max-height]" + s + o}>
-        <div className="p-4">{props.inner}</div>
+      <div className={"overflow-hidden transition-[max-height]" + o}>
+        <div className="px-4 pt-2 pb-6">{props.inner}</div>
       </div>
     </div>
   );

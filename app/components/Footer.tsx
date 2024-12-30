@@ -11,24 +11,24 @@ export function Footer() {
     { url: "/", text: "facebook link", icon: <FaFacebook /> },
   ];
   return (
-    <footer className="flex flex-wrap text-heather-50 justify-center mt-auto p-16 gap-x-16 gap-y-4 text-lg bg-heather-700 ">
+    <footer className="flex flex-wrap text-heather-50 justify-center mt-auto p-16 gap-x-16 gap-y-4 text-lg bg-heather-700 shadow-lg-top z-10 ">
       <div className="cta md:w-[calc(50%-2rem)] align-text-bottom ">
         Sign up to our newsletter to get the latest deals delivered straight to
         your inbox!
       </div>
-      <Form className=" md:w-[calc(50%-2rem)] flex flex-wrap gap-x-16 gap-y-4 items-baseline">
+      <Form className=" md:w-[calc(50%-2rem)] flex flex-wrap gap-x-16 gap-y-6 items-baseline">
         <label>
           <span className="mr-6 inline-block">Your email</span>
           <input
             type="email"
             name="email"
             id="email"
-            className="w-auto border-b-2 border-white "
+            className="w-auto border-b-2 px-2 border-white text-heather-900 dark:text-heather-50 "
           />
         </label>
         <button
           type="submit"
-          className="rounded-xl border-slate-50 border-2 box-content py-2 px-8 transition-shadow hover:shadow-inner shadow-slate-700  "
+          className="rounded-xl border-slate-50 border-2 box-content -mt-2 py-2 px-8 transition-shadow hover:shadow-inner shadow-slate-700  "
         >
           Subscribe Now
         </button>
@@ -56,11 +56,11 @@ function Sitemaps({ classes }: { classes: string }) {
   return (
     <div className={"section flex gap-16 " + classes}>
       <div className="flex flex-col gap-2">
-        <h3 className="text-2xl">Help</h3>
+        <h3 className="text-2xl mb-1">Help</h3>
         <NavList navLinks={help} />
       </div>
       <div className="flex flex-col gap-2">
-        <h3 className="text-2xl">Other</h3>
+        <h3 className="text-2xl mb-1">Other</h3>
         <NavList navLinks={other} />
       </div>
     </div>

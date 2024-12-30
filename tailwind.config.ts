@@ -17,12 +17,20 @@ export default {
         ],
         serif: ['"Corben"', '"Sitka Text"', "Cambria", "serif"],
       },
+      boxShadow: {
+        "lg-top":
+          "0 -10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+        "xl-top":
+          "0 -20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+        "2xl-top": "0 -25px 50px -12px rgb(0 0 0 / 0.25)",
+      },
       colors: {
         transparent: "transparent",
         current: "currentColor",
         white: "#ffffff",
         purple: "#3f3cbb",
         midnight: "#121063",
+        obsidian: "#26233d",
         metal: "#565584",
         silver: "#ecebff",
         "bubble-gum": "#ff77e9",

@@ -22,7 +22,7 @@ export function HeroBanner({
         </h1>
         <p className="text-2xl text-slate-600">{content.description}</p>
         {link && (
-          <SlideButton>
+          <SlideButton classes=" my-4 ">
             <NavLink to={link.url}>{link.text}</NavLink>
           </SlideButton>
         )}

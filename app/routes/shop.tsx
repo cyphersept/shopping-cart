@@ -6,7 +6,7 @@ import { useContext } from "react";
 
 export default function Shop() {
   return (
-    <section className="p-12 flex gap-12 bg-heather-100">
+    <section className="p-12 flex gap-12 bg-heather-100 dark:bg-obsidian">
       <aside>
         <SearchFilters />
       </aside>
@@ -18,7 +18,7 @@ export default function Shop() {
 function ShopList({ classes = "" }) {
   const products: Product[] = useContext(AllProductsContext);
   return (
-    <ul className={"list-none flex flex-wrap " + classes}>
+    <ul className={"list-none flex flex-wrap gap-8 " + classes}>
       {products.map((p) => (
         <ProductCard key={p.itemId} product={p} />
       ))}
