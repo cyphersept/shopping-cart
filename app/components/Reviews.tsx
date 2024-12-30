@@ -14,13 +14,11 @@ export function ReviewStars({
     avg % 1 > 0.75 ? base + 1 : avg % 1 > 0.25 ? base + 0.5 : base;
   const stars = [];
   for (let i = 0; i < 5; i++) {
-    if (rounded > i && rounded % 1 !== 0) stars.push(<FaRegStarHalfStroke />);
-    else if (rounded > i) stars.push(<FaStar />);
-    else stars.push(<FaRegStar />);
+    if (rounded > i + 1) stars.push(<FaStar key={i} />);
+    else if (rounded > i) stars.push(<FaRegStarHalfStroke key={i} />);
+    else stars.push(<FaRegStar key={i} />);
   }
-  // const fullStars = Math.floor(count);
-  // const halfStars = count % 1 >= 0.4 ? 1 : 0;
-  // const remainder = 5 - fullStars - halfStars;
+
   return (
     <div className={classes}>
       <div className=" inline-flex">{stars}</div>

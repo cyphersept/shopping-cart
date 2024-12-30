@@ -1,6 +1,5 @@
 import { createContext, useContext, useState } from "react";
 import type { CartItem, Product } from "./custom-types";
-import { useCart } from "./cart";
 
 interface PCType {
   product: Product;

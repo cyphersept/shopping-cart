@@ -42,7 +42,7 @@ export function QuantitySelect({ quantity, setQuantity }: QSProps) {
   const inBounds = (num: number) => Math.min(Math.max(num, 1), 99);
 
   return (
-    <div className="display flex grow border-2 border-heather-500 dark:border-slate-50 rounded-lg items-center">
+    <div className="display flex grow border-4 border-double border-heather-900 dark:border-heather-200 rounded-lg items-center">
       <button
         type="button"
         onClick={() => setQuantity(inBounds(quantity - 1))}
@@ -55,7 +55,7 @@ export function QuantitySelect({ quantity, setQuantity }: QSProps) {
         name="item-quantity"
         aria-label="Input quantity"
         value={quantity}
-        className="border-x-2 border-heather-500 dark:border-slate-50 p-2 text-center w-20 h-full grow overflow-hidden "
+        className="border-x-2 border-heather-500 dark:border-heather-200 p-2 text-center w-20 h-full grow overflow-hidden "
         onChange={(e) => {
           // Control and validate input: only quantities above 0
           const validateInt = parseInt(e.target.value);

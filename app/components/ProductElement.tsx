@@ -34,7 +34,9 @@ export function ProductCard({ product }: { product: Product }) {
         </h3>
         <TagList tags={product.tags} classes="" />
         <SizeList classes="mb-auto" />
-        <AddToCart />
+        <div className="mt-1">
+          <AddToCart />
+        </div>
       </li>
     </ProductContext.Provider>
   );
@@ -51,7 +53,7 @@ export function ProductPage({ product }: { product: Product }) {
 
   return (
     <ProductContext.Provider value={{ product, sizeIndex, setSizeIndex }}>
-      <section className="p-16 flex gap-16 w-full bg-gradient-to-t from-violet-300/20 via-heather-50 to-heather-50 dark:from-heather-400/80 dark:via-heather-800/20 dark:to-obsidian ">
+      <section className="p-16 flex gap-16 w-full bg-gradient-to-t from-violet-300/20 via-heather-50 to-heather-100 dark:from-violet-200/60 dark:via-heather-700/30 dark:to-obsidian ">
         <div className="grow w-auto ">
           <img
             src={product.imgSrc}
@@ -75,7 +77,7 @@ export function ProductPage({ product }: { product: Product }) {
               {paragraphs}
             </div>
           </div>
-          <TagList tags={product.tags} />
+          <TagList tags={product.tags} pClasses="!bg-heather-200" />
           <div>
             <h2 className="text-2xl mb-3">Sizes Available</h2>
             <SizeList btnClasses="py-2 px-6" />
@@ -88,11 +90,25 @@ export function ProductPage({ product }: { product: Product }) {
 }
 
 // Displays relevant tags about the product
-function TagList({ tags, classes }: { tags: string[]; classes?: string }) {
+function TagList({
+  tags,
+  classes,
+  pClasses,
+}: {
+  tags: string[];
+  classes?: string;
+  pClasses?: string;
+}) {
   return (
     <ul className={"capitalize flex gap-2 list-none " + classes}>
       {tags.map((t) => (
-        <Pill key={t} classes="text-heather-950 bg-heather-200 shadow-sm">
+        <Pill
+          key={t}
+          classes={
+            "text-heather-950 bg-heather-50 dark:bg-heather-200 shadow-sm " +
+            pClasses
+          }
+        >
           {t}
         </Pill>
       ))}

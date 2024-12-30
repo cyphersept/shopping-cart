@@ -10,11 +10,15 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   return { productId: params.itemId };
 }
 
+// BUG: AllProductsContext not initialized when directly accessing shop URL. Works when clicking navs
 export default function Product() {
   const { productId }: { productId: string } = useLoaderData();
   const products = useContext(AllProductsContext);
+  if (products.length === 0)
+    throw new Response("Products list not found", { status: 404 });
   const product = getProductById(productId, products);
-  if (!product) throw new Response("Not Found", { status: 404 });
+  if (!product)
+    throw new Response("Product not found in list", { status: 404 });
   return (
     <>
       <ProductPage product={product} />

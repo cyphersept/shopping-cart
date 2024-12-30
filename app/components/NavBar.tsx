@@ -1,6 +1,7 @@
 import { NavLink, useRouteError } from "react-router";
 import { Logo } from "../components/Logo";
 import type { LinkObj } from "~/custom-types";
+import { MdOutlineShoppingCart } from "react-icons/md";
 
 export function NavBar() {
   const navStyle = "px-2 py-4 text-lg hover-slide ";
@@ -36,4 +37,12 @@ export function NavList(p: { navLinks: LinkObj[]; navStyle?: string }) {
     </div>
   ));
   return list;
+}
+
+function CartWidget() {
+  return (
+    <div>
+      <MdOutlineShoppingCart />
+    </div>
+  );
 }
