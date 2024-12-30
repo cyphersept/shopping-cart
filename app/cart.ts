@@ -12,14 +12,12 @@ export function useCart() {
   const [cart, setCart] = useState([] as CartItem[]);
 
   // Find cart stored in cookies
-  useEffect(() => {
-    const fetchData = async () => {
-      setCart(await getSavedCart());
-    };
-    fetchData().catch(console.error);
-  }, []);
-
-  useEffect(() => {}, [cart]);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     setCart((await localforage.getItem("cart")) ?? []);
+  //   };
+  //   fetchData().catch(console.error);
+  // }, []);
 
   // Add (addQuantity) instaces of item with ID to saved cart values
   function addToCart(myProd: Product, itemSize: number, addQuantity = 1) {
@@ -98,6 +96,94 @@ export function useCart() {
 }
 
 // Remove (rmvQuantity) instaces of item with ID from saved cart values
+// Add (addQuantity) instaces of item with ID to saved cart values
+export function addToCart(
+  cart: CartItem[],
+  myProd: Product,
+  itemSize: number,
+  quantity: number
+) {
+  // If item is already in the cart, increase its quantity; else add it
+  const existing = cart[findInCart(cart, myProd, itemSize)];
+  if (existing) existing.quantity += quantity;
+  else
+    cart.push({
+      product: myProd,
+      selectedSize: itemSize,
+      quantity: quantity,
+    });
+
+  // Update cart and save state
+  localforage.setItem("cart", cart);
+  return cart;
+}
+
+// Remove items from cart
+export function removeFromCart(
+  cart: CartItem[],
+  myProd: Product,
+  itemSize: number,
+  quantity: number
+) {
+  const index = findInCart(cart, myProd, itemSize);
+
+  // Decrease item quantity in cart
+  if (index > -1) {
+    cart[index].quantity -= quantity;
+
+    // Remove items with no quantity
+    if (cart[index].quantity <= 0) cart.splice(index, 1);
+
+    // Updates cart and saves state
+    localforage.setItem("cart", cart);
+  }
+  return cart;
+}
+
+export function changeQuantityInCart(
+  cart: CartItem[],
+  myProd: Product,
+  itemSize: number,
+  quantity: number
+) {
+  const index = findInCart(cart, myProd, itemSize);
+
+  // Change item quantity in cart
+  if (index > -1) {
+    console.log(cart);
+    cart[index].quantity = quantity;
+
+    // Remove items with no quantity
+    if (cart[index].quantity <= 0) cart.splice(index, 1);
+
+    // Updates cart and saves state
+    console.log(cart);
+    localforage
+      .setItem("cart", cart)
+      .then(() => console.log("Cart saved to localforage"));
+  }
+  return cart;
+}
+
+// Calculate subtotal for each item in cart
+export function cartSum(input: CartItem[]) {
+  const sum = input
+    .map((item) => {
+      const p = item.product;
+      const itemSubtotal = !p ? 0 : p.price * item.selectedSize * item.quantity;
+      return itemSubtotal;
+    })
+    // Add up costs of each item
+    .reduce((acc, curr) => acc + curr, 0);
+  return sum;
+}
+
+function findInCart(cart: CartItem[], myProd: Product, itemSize: number) {
+  return cart.findIndex(
+    (item) =>
+      item.product.itemId === myProd.itemId && item.selectedSize === itemSize
+  );
+}
 
 // Gets sum total of cart items according to their sale prices
 

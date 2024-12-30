@@ -6,9 +6,9 @@ import border from "../images/border_top_tint.png";
 
 export function CallToAction() {
   return (
-    <section className="text-indigo-950 bg-heather-100 dark:bg-obsidian dark:text-heather-300  00 p-16 flex flex-col items-center gap-4 font-serif relative overflow-hidden [&>*]:z-10">
-      <h2 className="text-5xl">Love our tea?</h2>
-      <p className="text-xl text-center [word-spacing:1.5px] dark:text-heather-400">
+    <section className="text-indigo-950 bg-heather-100 dark:bg-obsidian dark:text-heather-200  00 p-16 flex flex-col items-center gap-4 font-serif relative overflow-hidden [&>*]:z-10">
+      <h2 className="text-5xl dark:text-heather-50">Love our tea?</h2>
+      <p className="text-xl text-center [word-spacing:1.5px]">
         Sign up for a yearly subscription and save 40% on each order! You'll get
         an extra tea as a thank you from us. No strings attached, simple
         one-click cancellation at any time.
@@ -23,10 +23,8 @@ export function CallToAction() {
         />
       </ul>
       <div>
-        <SlideButton classes="dark:bg-heather-700 dark:border-heather-300 ">
-          <NavLink className="text-slate-50" to="/subscription">
-            Subscribe Now
-          </NavLink>
+        <SlideButton classes="dark:bg-heather-700 dark:outline-heather-700 dark:border-heather-200 ">
+          <NavLink to="/subscription">Subscribe Now</NavLink>
         </SlideButton>
         <p className="text-stroke bg-gradient-to-b from-transparent to-transparent via-heather-100 z-[5] text-indigo-950 dark:bg-none dark:text-heather-400 mt-4 mb-12">
           Existing subscriber?

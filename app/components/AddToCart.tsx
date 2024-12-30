@@ -1,9 +1,8 @@
 import { useState, type SetStateAction } from "react";
-
-import { useCart } from "~/cart";
 import { FaMinus, FaPlus } from "react-icons/fa6";
-import { useProductContext } from "~/contexts";
+import { useCartContext, useProductContext } from "~/contexts";
 import { SlideButton } from "./Button";
+import { addToCart } from "~/cart";
 
 interface QSProps {
   quantity: number;
@@ -19,14 +18,16 @@ interface AddToCartProps {
 export function AddToCart({ detailed }: AddToCartProps) {
   const { product, sizeIndex } = useProductContext();
   const [quantity, setQuantity] = useState(1);
-  const { addToCart } = useCart();
+  const { cart, setCart } = useCartContext();
   return (
     <div className="flex gap-8 flex-wrap">
       {detailed && (
         <QuantitySelect quantity={quantity} setQuantity={setQuantity} />
       )}
       <SlideButton
-        onClick={() => addToCart(product, product.sizes[sizeIndex], quantity)}
+        onClick={() =>
+          setCart(addToCart(cart, product, product.sizes[sizeIndex], quantity))
+        }
         classes="!p-[0.5em] !grow-[100] !text-lg !shadow-md dark:bg-indigo-900 dark:outline-indigo-900 dark:border-slate-300 dark:saturate-50 "
       >
         <span>Add to Cart</span>

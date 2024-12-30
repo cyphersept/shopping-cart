@@ -3,31 +3,34 @@ import { NavBar } from "~/components/NavBar";
 import { isRouteErrorResponse } from "react-router";
 import { Footer } from "~/components/Footer";
 import { init } from "~/products";
-import { AllProductsContext } from "~/contexts";
+import { AllProductsContext, CartContext } from "~/contexts";
 import { useEffect, useState } from "react";
-import type { Product } from "~/custom-types";
+import type { CartItem, Product } from "~/custom-types";
+import { getSavedCart } from "~/cart";
 
 export default function NavBarLayout() {
   const [products, setProducts] = useState([] as Product[]);
+  const [cart, setCart] = useState([] as CartItem[]);
 
-  // Find cart stored in cookies
+  // Find cart and product list stored in cookies
   useEffect(() => {
-    const fetchData = async () => {
-      const productData = await init();
-      setProducts(productData);
-    };
-    fetchData().catch(console.error);
+    Promise.all([init(), getSavedCart()]).then(([products, cart]) => {
+      setProducts(products);
+      setCart(cart);
+    });
   }, []);
   return (
     <>
-      <NavBar />
-      <AllProductsContext.Provider value={products}>
-        <main>
-          <Outlet />
-          {/* <ErrorBoundary>
+      <CartContext.Provider value={{ cart, setCart }}>
+        <NavBar />
+        <AllProductsContext.Provider value={products}>
+          <main>
+            <Outlet />
+            {/* <ErrorBoundary>
         </ErrorBoundary> */}
-        </main>
-      </AllProductsContext.Provider>
+          </main>
+        </AllProductsContext.Provider>
+      </CartContext.Provider>
       <Footer />
     </>
   );
