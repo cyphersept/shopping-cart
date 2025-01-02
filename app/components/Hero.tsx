@@ -23,7 +23,9 @@ export function HeroBanner({
         <p className="text-2xl text-slate-600">{content.description}</p>
         {link && (
           <SlideButton classes=" min-w-72 my-4 ">
-            <NavLink to={link.url}>{link.text}</NavLink>
+            <NavLink to={link.url} viewTransition>
+              {link.text}
+            </NavLink>
           </SlideButton>
         )}
       </div>

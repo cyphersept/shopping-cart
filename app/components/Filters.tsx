@@ -15,7 +15,7 @@ export function SearchFilters() {
   const submit = (form: HTMLFormElement | null) => {
     if (!form) return;
     disableEmptyInputs(form);
-    post(form);
+    post(form, { replace: true });
     enableEmptyInputs(form);
   };
   const disableEmptyInputs = (form: HTMLFormElement) => {
@@ -73,8 +73,8 @@ function Price() {
         id="max"
         max={max}
         step="5"
-        value={limit}
         onChange={(e) => setLimit(e.target.value)}
+        defaultValue={max}
         className="w-full"
       />
 

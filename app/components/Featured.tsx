@@ -31,6 +31,7 @@ export function Featured({
 function FeatureLink({ link }: { link: LinkObj }) {
   return (
     <NavLink
+      viewTransition
       to={link.url}
       className="flex flex-col items-center w-52 h-[17.2rem] p-8 pb-4 rounded-lg shadow-2xl backdrop-blur-lg bg-gradient-to-b from-violet-200/40 via-heather-400/40 to-heather-500/30 transition-transform hover:-translate-y-4 "
     >

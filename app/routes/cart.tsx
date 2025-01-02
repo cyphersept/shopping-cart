@@ -1,5 +1,5 @@
 import { formatPrice } from "~/products";
-import { CloseButton } from "../components/CloseButton";
+import { CloseButton } from "../components/Button";
 import type { CartItem } from "~/custom-types";
 import { QuantitySelect } from "~/components/AddToCart";
 import { useState } from "react";

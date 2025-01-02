@@ -1,11 +1,46 @@
 import { useState, type PropsWithChildren } from "react";
 import { useProductContext } from "~/contexts";
 
+import { useNavigate } from "react-router-dom";
+import { HiXMark } from "react-icons/hi2";
+import { IoCaretBackOutline } from "react-icons/io5";
 interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   type?: "button" | "submit" | "reset" | undefined;
   classes?: string;
+}
+
+export function CloseButton({ classes }: { classes?: string }) {
+  const navigate = useNavigate();
+  return (
+    <button
+      type="button"
+      aria-label="close cart"
+      className={"text-slate-400 " + classes}
+      onClick={() => navigate(-1)}
+    >
+      <HiXMark />
+    </button>
+  );
+}
+
+export function BackButton({ classes }: { classes?: string }) {
+  const navigate = useNavigate();
+  return (
+    <button
+      type="button"
+      aria-label="go back"
+      className={
+        "flex gap-[1em] items-center hover:underline underline-offset-4 " +
+        classes
+      }
+      onClick={() => navigate(-1)}
+    >
+      <IoCaretBackOutline className="text-heather-600" />
+      <span>Back</span>
+    </button>
+  );
 }
 
 export function SlideButton({

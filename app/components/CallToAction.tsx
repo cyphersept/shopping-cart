@@ -23,10 +23,12 @@ export function CallToAction() {
         />
       </ul>
       <div>
-        <SlideButton classes="dark:bg-heather-700 dark:outline-heather-700 dark:border-heather-200 ">
-          <NavLink to="/subscription">Subscribe Now</NavLink>
+        <SlideButton classes="dark:bg-heather-700 dark:outline-heather-700 dark:border-heather-200 !px-20 ">
+          <NavLink viewTransition to="/subscription">
+            Subscribe Now
+          </NavLink>
         </SlideButton>
-        <p className="text-stroke bg-gradient-to-b from-transparent to-transparent via-heather-100 z-[5] text-indigo-950 dark:bg-none dark:text-heather-400 mt-4 mb-12">
+        <p className="text-stroke bg-gradient-to-b from-transparent to-transparent text-center via-heather-100 z-[5] text-indigo-950 dark:bg-none dark:text-heather-400 mt-4 mb-12">
           Existing subscriber?
           <span className="underline text-sm"> Manage your subscription</span>.
         </p>

@@ -2,35 +2,17 @@ import { Outlet, useRouteError } from "react-router";
 import { NavBar } from "~/components/NavBar";
 import { isRouteErrorResponse } from "react-router";
 import { Footer } from "~/components/Footer";
-import { init } from "~/products";
-import { AllProductsContext, CartContext } from "~/contexts";
-import { useEffect, useState } from "react";
-import type { CartItem, Product } from "~/custom-types";
-import { getSavedCart } from "~/cart";
+import { ImSpinner3 } from "react-icons/im";
 
 export default function NavBarLayout() {
-  const [products, setProducts] = useState([] as Product[]);
-  const [cart, setCart] = useState([] as CartItem[]);
-
-  // Find cart and product list stored in cookies
-  useEffect(() => {
-    Promise.all([init(), getSavedCart()]).then(([products, cart]) => {
-      setProducts(products);
-      setCart(cart);
-    });
-  }, []);
   return (
     <>
-      <CartContext.Provider value={{ cart, setCart }}>
-        <NavBar />
-        <AllProductsContext.Provider value={products}>
-          <main>
-            <Outlet />
-            {/* <ErrorBoundary>
+      <NavBar />
+      <main>
+        <Outlet />
+        {/* <ErrorBoundary>
         </ErrorBoundary> */}
-          </main>
-        </AllProductsContext.Provider>
-      </CartContext.Provider>
+      </main>
       <Footer />
     </>
   );
@@ -38,10 +20,13 @@ export default function NavBarLayout() {
 
 export function HydrateFallback() {
   return (
-    <div id="loading-splash">
-      <div id="loading-splash-spinner" />
-      <p>Loading, please wait...</p>
-    </div>
+    <>
+      <NavBar />
+      <main className="p-16 text-xl text-heather-400 mx-auto">
+        <ImSpinner3 className="animate-spin inline mr-[1em]"></ImSpinner3>
+        <span>Loading, please wait...</span>
+      </main>
+    </>
   );
 }
 

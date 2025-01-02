@@ -23,6 +23,7 @@ export function NavList(p: { navLinks: LinkObj[]; navStyle?: string }) {
   const list = p.navLinks.map((l) => (
     <div className="text-lg" key={l.text}>
       <NavLink
+        viewTransition
         className={({ isActive, isPending }) =>
           isPending
             ? "pending " + p.navStyle

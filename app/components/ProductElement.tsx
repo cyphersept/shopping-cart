@@ -6,7 +6,7 @@ import { ReviewStars } from "./Reviews";
 import { AddToCart } from "./AddToCart";
 import { ProductContext, useProductContext } from "~/contexts";
 import { formatPrice } from "~/products";
-import { JumpButton } from "./Button";
+import { BackButton, JumpButton } from "./Button";
 
 // Compact inline card display for a product
 export function ProductCard({ product }: { product: Product }) {
@@ -17,7 +17,7 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <ProductContext.Provider value={{ product, sizeIndex, setSizeIndex }}>
-      <li className={"card p-6 flex flex-col gap-4 grow max-w-[25rem]" + glass}>
+      <li className={"card p-6 flex flex-col gap-4 grow " + glass}>
         <img
           src={product.imgSrc}
           alt={"Image of " + product.name}
@@ -26,6 +26,7 @@ export function ProductCard({ product }: { product: Product }) {
         />
         <h3 className="text-2xl capitalize pb-1 dark:text-heather-50">
           <NavLink
+            viewTransition
             to={"product/" + product.itemId}
             className="hover-slide pb-2"
           >
@@ -54,7 +55,8 @@ export function ProductPage({ product }: { product: Product }) {
   return (
     <ProductContext.Provider value={{ product, sizeIndex, setSizeIndex }}>
       <section className="p-16 flex gap-16 w-full bg-gradient-to-t from-violet-300/20 via-heather-50 to-heather-100 dark:from-violet-200/60 dark:via-heather-700/30 dark:to-obsidian ">
-        <div className="grow w-auto ">
+        <div className="grow w-auto  mt-4 relative">
+          <BackButton classes="text-xl py-3 absolute top-0 -translate-y-full w-full" />
           <img
             src={product.imgSrc}
             alt={"Image of " + product.name}

@@ -9,6 +9,11 @@ import {
 
 import type { Route } from "./+types/root";
 import stylesheet from "./app.css?url";
+import { useEffect, useState } from "react";
+import type { CartItem, Product } from "./custom-types";
+import { init } from "./products";
+import { getSavedCart } from "./cart";
+import { AllProductsContext, CartContext } from "./contexts";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -47,7 +52,23 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />;
+  const [products, setProducts] = useState([] as Product[]);
+  const [cart, setCart] = useState([] as CartItem[]);
+
+  // Find cart and product list stored in cookies
+  useEffect(() => {
+    Promise.all([init(), getSavedCart()]).then(([products, cart]) => {
+      setProducts(products);
+      setCart(cart);
+    });
+  }, []);
+  return (
+    <CartContext.Provider value={{ cart, setCart }}>
+      <AllProductsContext.Provider value={products}>
+        <Outlet />
+      </AllProductsContext.Provider>
+    </CartContext.Provider>
+  );
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
