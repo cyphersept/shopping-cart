@@ -23,6 +23,7 @@ export interface Product {
   imgSrc: string;
   reviews: number;
   rating: number;
+  isNew: boolean;
 }
 
 export interface CartItem {
@@ -37,4 +38,12 @@ export interface SaleInfo {
   formula: (basePrice: number) => number;
   startDate: Date;
   endDate: Date;
+}
+
+const sortTypes = ["new", "best", "desc", "asc", "az", null] as const;
+export type SortType = (typeof sortTypes)[number];
+
+export function isSortType(str: string | null): SortType {
+  const sort = sortTypes.find((option) => option === str);
+  return sort ? sort : null;
 }

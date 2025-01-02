@@ -17,7 +17,7 @@ export function ProductCard({ product }: { product: Product }) {
 
   return (
     <ProductContext.Provider value={{ product, sizeIndex, setSizeIndex }}>
-      <li className={"card p-6 flex flex-col gap-4 grow w-80" + glass}>
+      <li className={"card p-6 flex flex-col gap-4 grow max-w-[25rem]" + glass}>
         <img
           src={product.imgSrc}
           alt={"Image of " + product.name}

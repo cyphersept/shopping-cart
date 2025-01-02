@@ -10,8 +10,8 @@ export function SearchBar({ classes = "" }) {
         <input
           type="text"
           className="p-2 left-0 border-b border-slate-50 w-full "
-          title="searchbar"
-          name="searchbar"
+          id="q"
+          name="q"
           onChange={(e) => {
             setShow(e.target.value === "");
           }}

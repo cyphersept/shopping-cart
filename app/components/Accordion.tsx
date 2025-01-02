@@ -1,19 +1,19 @@
 import { useState, type ReactElement, type ReactNode } from "react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
+import { FaChevronDown } from "react-icons/fa6";
 
 export function Accordion(props: {
   inner: ReactElement;
   title?: string;
   classes?: string;
-  defaultOpen?: boolean;
+  innerClasses?: string;
+  open?: boolean;
 }) {
-  const [openState, setOpenState] = useState(props.defaultOpen ?? false);
+  const [openState, setOpenState] = useState(props.open ?? false);
   const toggle = () => setOpenState(!openState);
   const s = " shadow-[inset_0_1px_0_0_theme(colors.slate.50)] ";
   const o = openState
     ? " max-h-60 duration-300 ease-out"
     : " max-h-0 duration-400 ease-in-out";
-  const arrowIcon = openState ? <FaChevronUp /> : <FaChevronDown />;
   const up = openState ? " -rotate-180" : " rotate-0";
 
   return (
@@ -34,7 +34,9 @@ export function Accordion(props: {
         <FaChevronDown className={"transition-transform" + up} />
       </button>
       <div className={"overflow-hidden transition-[max-height]" + o}>
-        <div className="px-4 pt-2 pb-6">{props.inner}</div>
+        <div className={"px-4 pt-2 pb-6 " + props.innerClasses}>
+          {props.inner}
+        </div>
       </div>
     </div>
   );

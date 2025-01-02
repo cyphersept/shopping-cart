@@ -1,7 +1,7 @@
 import { nanoid } from "nanoid";
 import { matchSorter } from "match-sorter";
 import { sortBy } from "sort-by-typescript";
-import type { Product, SaleInfo } from "./custom-types";
+import type { Product, SaleInfo, SortType } from "./custom-types";
 import { productImages } from "./images";
 import { LoremIpsum } from "lorem-ipsum";
 import localforage from "localforage";
@@ -17,8 +17,6 @@ const lorem = new LoremIpsum({
     min: 6,
   },
 });
-
-// Contexts used throughout app
 
 // Generates list of random products if one does not already exist
 export async function init() {
@@ -62,14 +60,37 @@ export function getProductById(targetId: string, products: Product[]) {
   return products.find((item) => item.itemId === targetId) ?? false;
 }
 
-// Find product matching query string in search set
-export function findProducts(query: string, searchSet: Product[]) {
-  const searchKeys = ["name", "description", "tags"];
-  return matchSorter(searchSet, query, { keys: searchKeys });
+// Find products matching query string in search set
+export function findProducts(query: string, list: Product[], keys: string[]) {
+  return matchSorter(list, query, { keys: keys });
 }
 
-export function sortProducts(list: Product[]) {
-  return list;
+// Sort products according to given order
+export function sortProducts(sort: SortType, list: Product[]) {
+  let sorted = list;
+  switch (sort) {
+    case "new":
+      sorted = list.sort((a, b) => (a.isNew ? 1 : 0) - (b.isNew ? 1 : 0));
+      break;
+    case "best":
+      sorted = list.sort((a, b) => -1 * (a.rating - b.rating));
+      break;
+    case "asc":
+      sorted = list.sort((a, b) => a.price * a.sizes[0] - b.price * b.sizes[0]);
+      break;
+    case "desc":
+      sorted = list.sort(
+        (a, b) => -1 * (a.price * a.sizes[0] - b.price * b.sizes[0])
+      );
+      break;
+    case "az":
+      sorted = list.sort((a, b) =>
+        [a.name, b.name].sort()[0] == a.name ? -1 : 1
+      );
+      break;
+  }
+
+  return sorted;
 }
 
 // Generate a new product
@@ -82,7 +103,7 @@ function productFactory(customProduct?: Partial<Product>) {
     "Black Tea",
     "Rooibos Tea",
     "Oolong Tea",
-    "Infusions",
+    "Tisane",
   ];
   const tag2 = ["Herbal Tea", "Fruit Tea", "Floral Tea"];
 
@@ -95,7 +116,8 @@ function productFactory(customProduct?: Partial<Product>) {
     price: getRandomFromArr(prices),
     imgSrc: "",
     reviews: Math.floor(Math.random() * 500),
-    rating: Math.floor(Math.random() * 200 + 300) / 100,
+    rating: Math.floor(Math.random() * 150 + 350) / 100,
+    isNew: false,
   };
 
   return { ...defaultProduct, ...customProduct } as Product;
@@ -107,7 +129,7 @@ export function generateProducts(count: number) {
 
   for (let i = 0; i < count; i++) {
     const currSrc = productImages[i % productImages.length];
-    products.push(productFactory({ imgSrc: currSrc }));
+    products.push(productFactory({ imgSrc: currSrc, isNew: i < 3 }));
   }
   return products;
 }
