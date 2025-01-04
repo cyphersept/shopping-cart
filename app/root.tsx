@@ -54,6 +54,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   const [products, setProducts] = useState([] as Product[]);
   const [cart, setCart] = useState([] as CartItem[]);
+  const [showCart, setShowCart] = useState(true);
 
   // Find cart and product list stored in cookies
   useEffect(() => {
@@ -63,7 +64,7 @@ export default function App() {
     });
   }, []);
   return (
-    <CartContext.Provider value={{ cart, setCart }}>
+    <CartContext.Provider value={{ cart, setCart, showCart, setShowCart }}>
       <AllProductsContext.Provider value={products}>
         <Outlet />
       </AllProductsContext.Provider>

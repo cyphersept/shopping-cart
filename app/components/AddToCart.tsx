@@ -18,16 +18,19 @@ interface AddToCartProps {
 export function AddToCart({ detailed }: AddToCartProps) {
   const { product, sizeIndex } = useProductContext();
   const [quantity, setQuantity] = useState(1);
-  const { cart, setCart } = useCartContext();
+  const { cart, setCart, setShowCart } = useCartContext();
   return (
     <div className="flex gap-8 flex-wrap">
       {detailed && (
         <QuantitySelect quantity={quantity} setQuantity={setQuantity} />
       )}
       <SlideButton
-        onClick={() =>
-          setCart(addToCart(cart, product, product.sizes[sizeIndex], quantity))
-        }
+        onClick={() => {
+          setCart([
+            ...addToCart(cart, product, product.sizes[sizeIndex], quantity),
+          ]);
+          setShowCart(true);
+        }}
         classes="!p-[0.5em] !grow-[100] !text-lg !shadow-md dark:bg-indigo-900 dark:outline-indigo-900 dark:border-slate-300 dark:saturate-50 active:translate-y-2 "
       >
         <span className=" ">Add to Cart</span>

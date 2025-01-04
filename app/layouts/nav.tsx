@@ -4,19 +4,28 @@ import { isRouteErrorResponse } from "react-router";
 import { Footer } from "~/components/Footer";
 import { ImSpinner3 } from "react-icons/im";
 import { useState } from "react";
+import CartMenu from "~/routes/cart";
+import { ShowCartContext } from "~/contexts";
 
 export default function NavBarLayout() {
-  const [showCart, setShowCart] = useState(false);
+  const [showCart, setShowCart] = useState(true);
   return (
-    <>
+    <div
+      className={
+        showCart
+          ? "h-screen overflow-y-hidden [scrollbar-gutter:stable]"
+          : "[scrollbar-gutter:stable]"
+      }
+    >
       <NavBar />
-      <main>
+      <CartMenu />
+      <main className="relative">
         <Outlet />
         {/* <ErrorBoundary>
         </ErrorBoundary> */}
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 

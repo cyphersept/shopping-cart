@@ -2,19 +2,30 @@ import { NavLink, useRouteError } from "react-router";
 import { Logo } from "../components/Logo";
 import type { LinkObj } from "~/custom-types";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { useCartContext } from "~/contexts";
 
 export function NavBar() {
+  const { cart, showCart, setShowCart } = useCartContext();
   const navStyle = "px-2 py-4 text-lg hover-slide ";
   const navLinks: LinkObj[] = [
     { url: "/", text: "Home" },
     { url: "/shop", text: "Shop" },
     { url: "/about", text: "About" },
-    { url: "/cart", text: "Cart" },
   ];
   return (
     <nav className="flex bg-heather-600 items-center gap-6 px-4 z-30 shadow-lg text-heather-50">
       <Logo classes="mr-auto text-4xl p-4" />
       <NavList navLinks={navLinks} navStyle={navStyle} />
+      <button
+        type="button"
+        onClick={() => {
+          setShowCart(!showCart);
+          console.log("Cart clicked. New value: " + showCart);
+        }}
+        className="flex px-2 py-4 text-lg hover-slide "
+      >
+        Cart ({cart.reduce((prev, curr) => prev + curr.quantity, 0)})
+      </button>
     </nav>
   );
 }
@@ -38,12 +49,4 @@ export function NavList(p: { navLinks: LinkObj[]; navStyle?: string }) {
     </div>
   ));
   return list;
-}
-
-function CartWidget() {
-  return (
-    <div>
-      <MdOutlineShoppingCart />
-    </div>
-  );
 }

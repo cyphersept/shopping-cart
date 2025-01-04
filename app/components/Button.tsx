@@ -11,21 +11,28 @@ interface ButtonProps {
   classes?: string;
 }
 
-export function CloseButton({ classes }: { classes?: string }) {
+export function CloseButton({
+  children,
+  ...props
+}: PropsWithChildren<ButtonProps>) {
   const navigate = useNavigate();
+  const clickFunc = props.onClick ? props.onClick : () => navigate(-1);
   return (
     <button
       type="button"
       aria-label="close cart"
-      className={"text-slate-400 " + classes}
-      onClick={() => navigate(-1)}
+      className={"text-slate-400 " + props.classes}
+      onClick={clickFunc}
     >
       <HiXMark />
     </button>
   );
 }
 
-export function BackButton({ classes }: { classes?: string }) {
+export function BackButton({
+  children,
+  ...props
+}: PropsWithChildren<ButtonProps>) {
   const navigate = useNavigate();
   return (
     <button
@@ -33,7 +40,7 @@ export function BackButton({ classes }: { classes?: string }) {
       aria-label="go back"
       className={
         "flex gap-[1em] items-center hover:underline underline-offset-4 " +
-        classes
+        props.classes
       }
       onClick={() => navigate(-1)}
     >
