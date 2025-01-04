@@ -10,7 +10,6 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   return { productId: params.itemId };
 }
 
-// BUG: AllProductsContext not initialized when directly accessing shop URL. Works when clicking navs
 export default function Product() {
   const { productId }: { productId: string } = useLoaderData();
   const products = useContext(AllProductsContext);

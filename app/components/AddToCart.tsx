@@ -28,9 +28,9 @@ export function AddToCart({ detailed }: AddToCartProps) {
         onClick={() =>
           setCart(addToCart(cart, product, product.sizes[sizeIndex], quantity))
         }
-        classes="!p-[0.5em] !grow-[100] !text-lg !shadow-md dark:bg-indigo-900 dark:outline-indigo-900 dark:border-slate-300 dark:saturate-50 "
+        classes="!p-[0.5em] !grow-[100] !text-lg !shadow-md dark:bg-indigo-900 dark:outline-indigo-900 dark:border-slate-300 dark:saturate-50 active:translate-y-2 "
       >
-        <span>Add to Cart</span>
+        <span className=" ">Add to Cart</span>
       </SlideButton>
     </div>
   );

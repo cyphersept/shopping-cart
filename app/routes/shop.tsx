@@ -54,30 +54,25 @@ export default function Shop() {
 }
 
 function ShopList({ products = [] as Product[] }) {
-  const fade = "opacity-0 h-0";
+  const fade = "opacity-0 ";
   const parentRef = useRef<HTMLUListElement>(null);
   const [animate, setAnimate] = useState("");
-  const [play, setPlay] = useState(false);
   const [prev, setPrev] = useState(products);
-  if (products !== prev) {
+  if (products !== prev && animate !== fade) {
     setAnimate(fade);
-    setPlay(true);
+    setTimeout(() => {
+      setAnimate("");
+      setPrev(products);
+    }, 250);
   }
-  const afterFade = (e: React.TransitionEvent) => {
-    if (e.currentTarget !== parentRef.current) return;
-    if (!play) return;
-    if (products !== prev) setPrev(products);
-    if (animate === fade) setAnimate("");
-    setPlay(false);
-  };
 
   return (
     <ul
       className={
-        "list-none grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-8 will-change-contents transition-all duration-300 " +
+        "list-none grid grid-cols-[repeat(auto-fill,minmax(20rem,1fr))] gap-8 will-change-contents transition-all duration-200 " +
         animate
       }
-      onTransitionEnd={(e) => afterFade}
+      onTransitionEnd={() => []}
       ref={parentRef}
     >
       {prev.length === 0 ? (

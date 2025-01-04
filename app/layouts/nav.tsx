@@ -3,8 +3,10 @@ import { NavBar } from "~/components/NavBar";
 import { isRouteErrorResponse } from "react-router";
 import { Footer } from "~/components/Footer";
 import { ImSpinner3 } from "react-icons/im";
+import { useState } from "react";
 
 export default function NavBarLayout() {
+  const [showCart, setShowCart] = useState(false);
   return (
     <>
       <NavBar />
