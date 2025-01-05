@@ -34,17 +34,13 @@ export function addToCart(
 export function removeFromCart(
   cart: CartItem[],
   myProd: Product,
-  itemSize: number,
-  quantity: number
+  itemSize: number
 ) {
   const index = findInCart(cart, myProd, itemSize);
 
-  // Decrease item quantity in cart
-  if (index > -1) {
-    cart[index].quantity -= quantity;
-
-    // Remove items with no quantity
-    if (cart[index].quantity <= 0) cart.splice(index, 1);
+  // Remove items with no quantity
+  if (cart[index].quantity <= 0) {
+    cart.splice(index, 1);
 
     // Updates cart and saves state
     localforage.setItem("cart", cart);

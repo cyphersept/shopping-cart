@@ -25,10 +25,12 @@ export const links: Route.LinksFunction = () => [
   {
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    as: "font",
   },
   {
     rel: "stylesheet",
     href: "https://fonts.googleapis.com/css2?family=Corben:wght@400;700&display=swap",
+    as: "font",
   },
   { rel: "stylesheet", href: stylesheet },
 ];
@@ -54,14 +56,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   const [products, setProducts] = useState([] as Product[]);
   const [cart, setCart] = useState([] as CartItem[]);
-  const [showCart, setShowCart] = useState(true);
+  const [showCart, setShowCart] = useState(false);
 
   // Find cart and product list stored in cookies
   useEffect(() => {
-    Promise.all([init(), getSavedCart()]).then(([products, cart]) => {
-      setProducts(products);
-      setCart(cart);
-    });
+    const getProducts = async () => {
+      setProducts(await init());
+      setCart(await getSavedCart());
+    };
+    getProducts();
   }, []);
   return (
     <CartContext.Provider value={{ cart, setCart, showCart, setShowCart }}>

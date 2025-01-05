@@ -21,7 +21,7 @@ export function CloseButton({
     <button
       type="button"
       aria-label="close cart"
-      className={"text-slate-400 " + props.classes}
+      className={"text-heather-300 " + props.classes}
       onClick={clickFunc}
     >
       <HiXMark />

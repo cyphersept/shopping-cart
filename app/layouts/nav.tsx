@@ -3,12 +3,11 @@ import { NavBar } from "~/components/NavBar";
 import { isRouteErrorResponse } from "react-router";
 import { Footer } from "~/components/Footer";
 import { ImSpinner3 } from "react-icons/im";
-import { useState } from "react";
 import CartMenu from "~/routes/cart";
-import { ShowCartContext } from "~/contexts";
+import { ShowCartContext, useCartContext } from "~/contexts";
 
 export default function NavBarLayout() {
-  const [showCart, setShowCart] = useState(true);
+  const { showCart } = useCartContext();
   return (
     <div
       className={
@@ -37,6 +36,7 @@ export function HydrateFallback() {
         <ImSpinner3 className="animate-spin inline mr-[1em]"></ImSpinner3>
         <span>Loading, please wait...</span>
       </main>
+      <Footer />
     </>
   );
 }

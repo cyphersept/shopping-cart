@@ -3,8 +3,10 @@ import { CloseButton } from "../components/Button";
 import type { CartItem } from "~/custom-types";
 import { QuantitySelect } from "~/components/AddToCart";
 import { useCartContext } from "~/contexts";
-import { changeQuantityInCart, cartSum } from "~/cart";
+import { changeQuantityInCart, cartSum, removeFromCart } from "~/cart";
 import { SlideButton } from "~/components/Button";
+import { FaTrashCan } from "react-icons/fa6";
+import { FaRegTrashAlt } from "react-icons/fa";
 
 export default function CartMenu() {
   const { cart, showCart, setShowCart } = useCartContext();
@@ -33,7 +35,7 @@ export default function CartMenu() {
           <h2>
             My Cart ({cart.reduce((prev, curr) => prev + curr.quantity, 0)})
           </h2>
-          <CloseButton classes="-mr-4 " onClick={() => setShowCart(false)} />
+          <CloseButton classes="-mr-1 " onClick={() => setShowCart(false)} />
         </header>
 
         <div className="grow h-1/2">{cartItems}</div>
@@ -64,32 +66,43 @@ function CartEntry({ item }: { item: CartItem }) {
   const updateQuantity = (n: number) => {
     setCart([...changeQuantityInCart(cart, product, size, n)]);
   };
+  const deleteItem = () => {
+    setCart([...changeQuantityInCart(cart, product, size, 0 - item.quantity)]);
+  };
 
   if (!product) return <></>;
   else
     return (
-      <li className="h-32 w-full flex gap-4 snap-start">
+      <li className="h-28 w-full flex gap-4 snap-start relative">
         <img
-          className="h-full w-auto"
+          className="h-28 w-auto"
           src={product.imgSrc}
           alt={"Image of " + product.name}
         />
         <div className="flex flex-col  ">
-          <h3 className="whitespace-nowrap overflow-hidden overflow-ellipsis capitalize text-xl ">
+          <h3 className="whitespace-nowrap overflow-hidden overflow-ellipsis capitalize text-lg ">
             {product.name}
           </h3>
           <div className="text-heather-600 dark:text-slate-400 text-sm">
             ID: {product.itemId}
           </div>
-          <div className="my-1">
+          <div className="mt-auto mb-0.5">
             {formatPrice(product.price * item.selectedSize)} ·{" "}
             {item.selectedSize} oz
           </div>
-          <div>
+          <div className="flex gap-2 -mr-2 h-8">
             <QuantitySelect
               quantity={item.quantity}
               setQuantity={updateQuantity}
             />
+            <button
+              type="button"
+              aria-label="Remove item"
+              className="py-2 pl-2 transition-transform hover:-translate-y-1 active:!translate-y-0"
+              onClick={deleteItem}
+            >
+              <FaRegTrashAlt className="text-lg text-slate-300" />
+            </button>
           </div>
         </div>
       </li>

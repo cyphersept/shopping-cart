@@ -7,6 +7,7 @@ import type { Route } from "../+types/root";
 import { useLoaderData, useNavigation } from "react-router";
 import { findProducts, sortProducts } from "~/products";
 import { BackButton } from "~/components/Button";
+import { ImSpinner3 } from "react-icons/im";
 
 export async function clientLoader({ request }: Route.LoaderArgs) {
   const url = new URL(request.url);
@@ -48,6 +49,23 @@ export default function Shop() {
       <section className="grow">
         <h1 className="text-5xl mb-6">Results ({products.length}):</h1>
         <ShopList products={products} />
+      </section>
+    </div>
+  );
+}
+
+export function HydrateFallback() {
+  return (
+    <div className="p-12 flex gap-12 bg-heather-100 dark:bg-obsidian">
+      <aside>
+        <SearchFilters />
+      </aside>
+      <section className="grow">
+        <h1 className="text-5xl mb-6">Loading...</h1>
+        <div className=" text-xl text-heather-400">
+          <ImSpinner3 className="animate-spin inline mr-[1em]"></ImSpinner3>
+          <span>Loading, please wait...</span>
+        </div>
       </section>
     </div>
   );

@@ -14,7 +14,7 @@ export function NavBar() {
   ];
   return (
     <nav className="flex bg-heather-600 items-center gap-6 px-4 z-30 shadow-lg text-heather-50">
-      <Logo classes="mr-auto text-4xl p-4" />
+      <Logo classes="!mr-[calc(100vw-45.5rem)] text-4xl p-4" />
       <NavList navLinks={navLinks} navStyle={navStyle} />
       <button
         type="button"

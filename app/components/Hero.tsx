@@ -22,11 +22,11 @@ export function HeroBanner({
         </h1>
         <p className="text-2xl text-slate-600">{content.description}</p>
         {link && (
-          <SlideButton classes=" min-w-72 my-4 ">
-            <NavLink to={link.url} viewTransition>
-              {link.text}
-            </NavLink>
-          </SlideButton>
+          <NavLink to={link.url} viewTransition className="my-4">
+            <SlideButton classes=" min-w-72">
+              <span>{link.text}</span>
+            </SlideButton>
+          </NavLink>
         )}
       </div>
     </header>

@@ -41,7 +41,7 @@ export function AddToCart({ detailed }: AddToCartProps) {
 
 export function QuantitySelect({ quantity, setQuantity }: QSProps) {
   const btnStyle =
-    "py-2 px-4 h-full hover:-translate-y-1 active:!translate-y-1 transition-transform ";
+    "relative py-auto px-4 h-full hover:-translate-y-1 active:!translate-y-1 transition-transform ";
   const inBounds = (num: number) => Math.min(Math.max(num, 1), 99);
 
   return (
