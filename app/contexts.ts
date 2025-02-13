@@ -25,7 +25,7 @@ interface SCType {
   setShowCart: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-export const AllProductsContext = createContext<Product[]>([]);
+const AllProductsContext = createContext<Product[]>([]);
 export const ProductContext = createContext<PCType | undefined>(undefined);
 export const CartItemContext = createContext<CICType | undefined>(undefined);
 export const CartContext = createContext<CartType | undefined>(undefined);

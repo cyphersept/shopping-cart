@@ -1,8 +1,6 @@
 import { NavLink } from "react-router";
 import type { LinkObj } from "~/custom-types";
-import bgLeft from "../images/stencil_left.png";
-import bgRight from "../images/stencil_right.png";
-import separator from "../images/separator.svg";
+import { stencilLeft, stencilRight, separator } from "~/images";
 
 export function Featured({
   title,
@@ -14,8 +12,8 @@ export function Featured({
   const bgClass = "absolute h-full w-auto mix-blend-soft-light top-0 ";
   return (
     <section className="relative p-16 bg-gradient-to-t bg-heather-700 text-heather-50 overflow-hidden">
-      <img src={bgLeft} alt="" className={bgClass + "-left-8"} />
-      <img src={bgRight} alt="" className={bgClass + "-right-12"} />
+      <img src={stencilLeft} alt="" className={bgClass + "-left-8"} />
+      <img src={stencilRight} alt="" className={bgClass + "-right-12"} />
       <div className="flex flex-col gap-8 relative z-10">
         <h2 className="text-5xl text-center">{title}</h2>
         <div className="flex justify-center items-start gap-16">

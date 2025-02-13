@@ -3,7 +3,7 @@ import { NavBar } from "~/components/NavBar";
 import { isRouteErrorResponse } from "react-router";
 import { Footer } from "~/components/Footer";
 import { ImSpinner3 } from "react-icons/im";
-import CartMenu from "~/routes/cart";
+import CartMenu from "~/components/CartMenu";
 import { ShowCartContext, useCartContext } from "~/contexts";
 
 export default function NavBarLayout() {

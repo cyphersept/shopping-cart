@@ -13,26 +13,26 @@ export function ProductCard({ product }: { product: Product }) {
   const [sizeIndex, setSizeIndex] = useState(0);
   const priceString = formatPrice(product.price * product.sizes[sizeIndex]);
   const glass =
-    " bg-violet-900/20 shadow-xl bg-gradient-to-t from-heather-100/60 via-heather-400/30 to-heather-600/40 dark:from-heather-400/60 dark:to-heather-800/20 dark:text-heather-200 dark:shadow-heather-600/30";
+    " bg-violet-900/20 shadow-xl bg-gradient-to-t from-heather-100/60 via-heather-400/30 to-heather-600/40 dark:from-heather-300/60 dark:to-heather-800/30 dark:text-heather-200 dark:shadow-heather-600/30";
 
   return (
     <ProductContext.Provider value={{ product, sizeIndex, setSizeIndex }}>
       <li className={"card p-6 flex flex-col gap-4 grow " + glass}>
-        <img
-          src={product.imgSrc}
-          alt={"Image of " + product.name}
-          className="object-cover aspect-[4/3] shadow-lg drop-shadow-sm shadow-obsidian/15"
-          loading="lazy"
-        />
-        <h3 className="text-2xl capitalize pb-1 dark:text-heather-50">
-          <NavLink
-            viewTransition
-            to={"product/" + product.itemId}
-            className="hover-slide pb-2"
-          >
+        <NavLink
+          viewTransition
+          to={"product/" + product.itemId}
+          className="hover-slide pb-2"
+        >
+          <img
+            src={product.imgSrc}
+            alt={"Image of " + product.name}
+            className="object-cover aspect-[4/3] shadow-lg drop-shadow-sm shadow-obsidian/15"
+            loading="lazy"
+          />
+          <h3 className="text-2xl capitalize pb-1 dark:text-heather-50">
             {product.name} — {priceString}
-          </NavLink>
-        </h3>
+          </h3>
+        </NavLink>
         <TagList tags={product.tags} classes="" />
         <SizeList classes="mb-auto" />
         <div className="mt-1">

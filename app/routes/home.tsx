@@ -2,9 +2,8 @@ import type { Route } from "./+types/home";
 import { Welcome } from "../welcome/welcome";
 import { CallToAction } from "~/components/CallToAction";
 import { HeroBanner } from "~/components/Hero";
-import bannerImg from "../images/banner.jpg";
 import { Featured } from "~/components/Featured";
-import { productImages } from "~/images";
+import { productImages, banner } from "~/images";
 import { SVGFrame } from "~/components/SVGFrame";
 
 export function meta({}: Route.MetaArgs) {
@@ -20,7 +19,7 @@ export default function Home() {
       <HeroBanner
         content={{
           title: "Natural Cure",
-          imgSrc: bannerImg,
+          imgSrc: banner,
           description:
             "Creating delicious, organic blends and all-natural herbal remedies for every ailment and occasion since 1973.",
         }}

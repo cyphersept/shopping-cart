@@ -8,7 +8,7 @@ export function Socials(props: { linkData: LinkObj[]; classes: string }) {
         <IconLink
           key={obj.text}
           url={obj.url}
-          label={obj.text}
+          text={obj.text}
           icon={obj.icon}
         />
       ))}

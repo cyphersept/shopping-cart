@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import type { CartItem, Product } from "./custom-types";
 import localforage from "localforage";
 

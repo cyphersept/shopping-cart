@@ -13,7 +13,7 @@ import { useEffect, useState } from "react";
 import type { CartItem, Product } from "./custom-types";
 import { init } from "./products";
 import { getSavedCart } from "./cart";
-import { AllProductsContext, CartContext } from "./contexts";
+import { CartContext } from "./contexts";
 
 export const links: Route.LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -53,24 +53,27 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+// export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+//   const cartPromise = getSavedCart();
+
+//   return { cartPromise };
+// }
+
 export default function App() {
-  const [products, setProducts] = useState([] as Product[]);
   const [cart, setCart] = useState([] as CartItem[]);
   const [showCart, setShowCart] = useState(false);
 
   // Find cart and product list stored in cookies
   useEffect(() => {
-    const getProducts = async () => {
-      setProducts(await init());
+    const getCart = async () => {
       setCart(await getSavedCart());
     };
-    getProducts();
+    getCart();
   }, []);
+
   return (
     <CartContext.Provider value={{ cart, setCart, showCart, setShowCart }}>
-      <AllProductsContext.Provider value={products}>
-        <Outlet />
-      </AllProductsContext.Provider>
+      <Outlet />
     </CartContext.Provider>
   );
 }

@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { MdAvTimer, MdColorize, MdFreeCancellation } from "react-icons/md";
 import { SlideButton } from "./Button";
 import { NavLink } from "react-router";
-import border from "../images/border_top_tint.png";
+import { borderTopTint } from "~/images";
 
 export function CallToAction() {
   return (
@@ -34,7 +34,7 @@ export function CallToAction() {
         </p>
       </div>
       <img
-        src={border}
+        src={borderTopTint}
         alt=""
         className="absolute w-full h-auto opacity-90 dark:opacity-60 dark:mix-blend-color-burn -scale-y-100 -bottom-4 mix-blend-multiply !z-0"
       />

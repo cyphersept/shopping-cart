@@ -1,9 +1,9 @@
 import { formatPrice } from "~/products";
-import { CloseButton } from "../components/Button";
+import { CloseButton } from "./Button";
 import type { CartItem } from "~/custom-types";
 import { QuantitySelect } from "~/components/AddToCart";
 import { useCartContext } from "~/contexts";
-import { changeQuantityInCart, cartSum, removeFromCart } from "~/cart";
+import { changeQuantityInCart, cartSum } from "~/cart";
 import { SlideButton } from "~/components/Button";
 import { FaTrashCan } from "react-icons/fa6";
 import { FaRegTrashAlt } from "react-icons/fa";
@@ -101,7 +101,7 @@ function CartEntry({ item }: { item: CartItem }) {
               className="py-2 pl-2 transition-transform hover:-translate-y-1 active:!translate-y-0"
               onClick={deleteItem}
             >
-              <FaRegTrashAlt className="text-lg text-slate-300" />
+              <FaRegTrashAlt className="text-lg text-heather-600 dark:text-slate-300" />
             </button>
           </div>
         </div>
