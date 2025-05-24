@@ -1,9 +1,9 @@
 import { useState, type PropsWithChildren } from "react";
 import { useProductContext } from "~/contexts";
 
-import { useNavigate } from "react-router-dom";
 import { HiXMark } from "react-icons/hi2";
 import { IoCaretBackOutline } from "react-icons/io5";
+import { useNavigate } from "react-router";
 interface ButtonProps {
   onClick?: () => void;
   disabled?: boolean;
